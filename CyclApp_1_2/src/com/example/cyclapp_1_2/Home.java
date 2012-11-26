@@ -32,8 +32,8 @@ public class Home extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.sat_nav_button:
-			//			Intent st = new Intent(this, SatNav.class);
-			//			startActivity(st);
+			Intent st = new Intent(this, Navigation.class);
+			startActivity(st);
 			break;
 		case R.id.view_past_rides_button:
 			Intent h = new Intent(this, History.class);
