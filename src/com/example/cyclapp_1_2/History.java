@@ -28,6 +28,7 @@ public class History extends Activity {
 		return true;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -85,6 +86,7 @@ public class History extends Activity {
 
 
 	/** Called when the activity is first created. */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -108,7 +110,6 @@ public class History extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			// TODO Auto-generated method stub	
 			Intent td = new Intent(History.this, TripDisplay.class);
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			final int item_id = cursor.getInt(cursor.getColumnIndex(SQLiteAdapter.KEY_ID));
@@ -118,11 +119,11 @@ public class History extends Activity {
 
 		@Override
 		protected void onDestroy() {
-			// TODO Auto-generated method stub
 			super.onDestroy();
 			mySQLiteAdapterReader.close();
 		}
 
+		@SuppressWarnings("deprecation")
 		private void updateList(){
 			cursor.requery();
 		}

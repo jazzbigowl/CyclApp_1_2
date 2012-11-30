@@ -36,6 +36,10 @@
             android:label="@string/title_activity_test" >
         </activity>
         <activity
+            android:name=".Test2"
+            android:label="@string/title_activity_test" >
+        </activity>
+        <activity
             android:name=".About"
             android:label="@string/title_activity_about"
             android:theme="@android:style/Theme.Dialog" >

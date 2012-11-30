@@ -19,32 +19,34 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
+        public static final int MapSpeedText=0x7f090007;
+        public static final int MapTimeText=0x7f090008;
         public static final int about_button=0x7f090005;
         public static final int about_content=0x7f090000;
-        public static final int address_button=0x7f090015;
+        public static final int address_button=0x7f090017;
         public static final int contentlist=0x7f090001;
-        public static final int delete_all=0x7f090019;
-        public static final int exit=0x7f09001a;
+        public static final int delete_all=0x7f09001b;
+        public static final int exit=0x7f09001c;
         public static final int exit_button=0x7f090006;
-        public static final int frame=0x7f090007;
-        public static final int id=0x7f090011;
-        public static final int label=0x7f090014;
-        public static final int map=0x7f090008;
-        public static final int map_button=0x7f090010;
-        public static final int menu_settings=0x7f090016;
-        public static final int myLocationText=0x7f090009;
-        public static final int mySpeedText=0x7f09000a;
-        public static final int pause_button=0x7f09000e;
-        public static final int resume_button=0x7f09000f;
+        public static final int frame=0x7f090009;
+        public static final int id=0x7f090013;
+        public static final int label=0x7f090016;
+        public static final int map=0x7f09000a;
+        public static final int map_button=0x7f090012;
+        public static final int menu_settings=0x7f090018;
+        public static final int myLocationText=0x7f09000b;
+        public static final int mySpeedText=0x7f09000c;
+        public static final int pause_button=0x7f090010;
+        public static final int resume_button=0x7f090011;
         public static final int sat_nav_button=0x7f090003;
-        public static final int sort_date=0x7f090018;
-        public static final int sort_name=0x7f090017;
-        public static final int start_button=0x7f09000c;
-        public static final int stop_button=0x7f09000d;
+        public static final int sort_date=0x7f09001a;
+        public static final int sort_name=0x7f090019;
+        public static final int start_button=0x7f09000e;
+        public static final int stop_button=0x7f09000f;
         public static final int test_button=0x7f090002;
-        public static final int text1=0x7f090012;
-        public static final int text2=0x7f090013;
-        public static final int timer_label=0x7f09000b;
+        public static final int text1=0x7f090014;
+        public static final int text2=0x7f090015;
+        public static final int timer_label=0x7f09000d;
         public static final int view_past_rides_button=0x7f090004;
     }
     public static final class layout {

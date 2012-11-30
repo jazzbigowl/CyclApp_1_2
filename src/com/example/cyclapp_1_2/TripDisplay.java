@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.database.Cursor;
 import android.view.Menu;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class TripDisplay extends Activity {
@@ -56,9 +55,10 @@ public class TripDisplay extends Activity {
 			bitch += s + ", ";
 		}
 		
-		String penis = item_id + "\n" + item_name + "\n" + item_date + "\n" + item_distance + "\n" + item_speed 
-				+ "\n" + item_start + "\n" + item_end + "\n" + item_time + "\n" + item_startLat + "\n" + item_startLon 
-				+ "\n" + item_endLat + "\n" + item_endLon + "\n"  + "\n" + bitch;
+		String penis = "id: " + item_id + "\nname: " + item_name + "\ndate: " + item_date + "\ndistance: " + item_distance 
+				+ "\nspeed: " + item_speed + "\nstart time:"  + item_start + "\nend time: " + item_end 
+				+ "\ntime: " + item_time + "\nstart lat: " + item_startLat + "\nstart lon: " + item_startLon 
+				+ "\nend lat: " + item_endLat + "\nend lon: " + item_endLon + "\n"  + "\nall speeds array: " + bitch;
 		myHelloText.setText(penis);
     }
     

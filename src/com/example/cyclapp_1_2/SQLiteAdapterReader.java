@@ -9,7 +9,6 @@ public class SQLiteAdapterReader extends SQLiteAdapter {
 
 	public SQLiteAdapterReader(Context c) {
 		super(c);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public SQLiteAdapter openToRead() throws android.database.SQLException {
@@ -31,12 +30,8 @@ public class SQLiteAdapterReader extends SQLiteAdapter {
 	}
 	
 	public Cursor queueOne(Integer id){
-		String[] columns = new String[]{KEY_ID, KEY_NAME, 
-				KEY_DATE, KEY_TRIP_TIME, KEY_TRIP_DISTANCE, KEY_START_TIME, 
-				KEY_END_TIME, KEY_AVERAGE_SPEED, KEY_START_LAT, KEY_START_LON, KEY_END_LAT, KEY_END_LON, KEY_SPEEDS};
 		Cursor cursor = sqLiteDatabase.rawQuery("select * from " + MYDATABASE_TABLE + " where " + 
 				KEY_ID + "=" + id  , null);
-
 		return cursor;
 	}
 

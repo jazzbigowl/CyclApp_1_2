@@ -3,8 +3,7 @@ package com.example.cyclapp_1_2;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
+import com.google.android.maps.MapActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -130,6 +129,13 @@ public class Navigation extends Activity  implements OnClickListener {
 			break;
 		case R.id.map_button:
 			Intent m = new Intent(this, Map.class);
+			if (isRunning && !isPaused) {
+				m.putExtra("setTimer", true);
+				m.putExtra("myTimer", time);
+			} else {
+				m.putExtra("setTimer", false);
+				m.putExtra("myTimer", time);
+			}
 			startActivity(m);
 			break;
 		}
@@ -149,6 +155,7 @@ public class Navigation extends Activity  implements OnClickListener {
 
 
 		final EditText dialogName_id = new EditText(Navigation.this);
+		@SuppressWarnings("deprecation")
 		LayoutParams dialogName_idLayoutParams
 		= new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		dialogName_id.setLayoutParams(dialogName_idLayoutParams);
@@ -314,7 +321,22 @@ public class Navigation extends Activity  implements OnClickListener {
 			hours = time / 3600;
 			minutes = (time % 3600) / 60;
 			seconds = time % 60;
-			String timeString = hours + ":" + minutes + ":" + seconds;
+			String timeString = "";
+			if (hours < 10) {
+				timeString += "0" + hours + ":";
+			} else {
+				timeString += hours + ":";
+			}
+			if (minutes < 10) {
+				timeString += "0" + minutes + ":";
+			} else {
+				timeString += minutes + ":";
+			}
+			if (seconds < 10) {
+				timeString += "0" + seconds;
+			} else {
+				timeString += seconds;
+			}
 			t.setText(timeString);
 		}
 	}

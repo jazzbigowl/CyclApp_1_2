@@ -1,16 +1,12 @@
 package com.example.cyclapp_1_2;
 
-import com.example.cyclapp_1_2.SQLiteAdapter.SQLiteHelper;
-
 import android.content.ContentValues;
 import android.content.Context;
-import android.location.Location;
 
 public class SQLiteAdapterWriter extends SQLiteAdapter {
 
 	public SQLiteAdapterWriter(Context c) {
 		super(c);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public SQLiteAdapter openToWrite() throws android.database.SQLException {

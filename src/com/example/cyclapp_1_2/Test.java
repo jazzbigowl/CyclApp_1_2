@@ -8,7 +8,6 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,10 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
-import com.google.android.maps.Overlay;
-import android.os.Bundle;
 
 public class Test extends MapActivity  implements OnClickListener {
 
@@ -171,6 +166,7 @@ public class Test extends MapActivity  implements OnClickListener {
 
 
 		final EditText dialogName_id = new EditText(Test.this);
+		@SuppressWarnings("deprecation")
 		LayoutParams dialogName_idLayoutParams
 		= new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		dialogName_id.setLayoutParams(dialogName_idLayoutParams);
@@ -341,24 +337,27 @@ public class Test extends MapActivity  implements OnClickListener {
 		}
 	}
 
-	// Method for calculating Distance using Haverside
-	//returns distance in miles
-	// http://introcs.cs.princeton.edu/java/12types/GreatCircle.java.html
-	private double calculateDistance(double oldLat, double oldLon, double curLat, double curLon) {
+	// Method for calculating Distance
+		private double calculateDistance(double oldLat, double oldLon, double curLat, double curLon) {
+			// Using Pythagoras
+			double lat = 69.1 * Math.abs(curLat - oldLat);
+			double lon = 69.1 * Math.abs(curLon - oldLon) * Math.cos(curLat/57.3);
+			double distance = Math.sqrt(Math.pow(lat, 2) + Math.pow(lon, 2));
+			return distance;
 
-		double a = Math.pow(Math.sin((oldLat - curLat) / 2), 2) + Math.cos(curLat) * Math.cos(oldLat) * Math.pow(Math.sin((oldLon - curLon)/2), 2);
 
-		// great circle distance in radians
-		double angle2 = 2 * Math.asin(Math.min(1, Math.sqrt(a)));
-
-		// convert back to degrees
-		angle2 = Math.toDegrees(angle2);
-
-		// each degree on a great circle of Earth is 60 nautical miles
-		double distance2 = 60 * angle2;
-
-		return distance2;
-	}
+			// Method for calculating Distance using Haverside
+			// returns distance in miles
+			// http://introcs.cs.princeton.edu/java/12types/GreatCircle.java.html
+			//		double a = Math.pow(Math.sin((oldLat - curLat) / 2), 2) + Math.cos(curLat) * Math.cos(oldLat) * Math.pow(Math.sin((oldLon - curLon)/2), 2);
+			//		// great circle distance in radians
+			//		double angle2 = 2 * Math.asin(Math.min(1, Math.sqrt(a)));
+			//		// convert back to degrees
+			//		angle2 = Math.toDegrees(angle2);
+			//		// each degree on a great circle of Earth is 60 nautical miles
+			//		double distance2 = 60 * angle2;
+			//		return distance2;
+		}
 
 	// Method for calculating speed
 	public double calculateSpeed() {
@@ -366,7 +365,7 @@ public class Test extends MapActivity  implements OnClickListener {
 			return 0;
 		} else {
 			// TimeDiff in hours
-			double TimeDiff   = ((curLocationTime - oldLocationTime) / (1000*60*60)) % 24;
+			double TimeDiff   = ((curLocationTime - oldLocationTime) / (1000*60*60)); // in hours
 			double Distance = calculateDistance(oldLocation.getLatitude(), oldLocation.getLongitude(), curLocation.getLatitude(), curLocation.getLongitude());
 			double speed = (Distance / TimeDiff);
 			return speed;
