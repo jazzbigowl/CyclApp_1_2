@@ -3,16 +3,14 @@ package com.example.cyclapp_1_2;
 import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
-import android.database.Cursor;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.SimpleCursorAdapter;
 
-public class locationDevice  extends Activity {
+public class LocationDevice  extends Activity {
 
 	Location curLocation, oldLocation, startLocation, endLocation;
 	double curLocationTime = 0, oldLocationTime = 0, startLocationTime = 0, endLocationTime = 0; // in milliseconds
@@ -28,7 +26,7 @@ public class locationDevice  extends Activity {
 
 
 
-	public locationDevice(Bundle savedInstanceState) {
+	public LocationDevice(Navigation nav) {
 
 		LocationManager locationManager;
 		String svcName = Context.LOCATION_SERVICE;
@@ -50,6 +48,7 @@ public class locationDevice  extends Activity {
 		locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
 	}
 
+	
 	private void updateWithNewLocation(Location location) {
 		if (location != null) {
 			oldLocationTime = curLocationTime;
@@ -62,6 +61,7 @@ public class locationDevice  extends Activity {
 		}
 		speed = calculateSpeed();
 	}
+
 
 	private final LocationListener locationListener = new LocationListener() {
 		public void onLocationChanged(Location location) {
@@ -76,6 +76,10 @@ public class locationDevice  extends Activity {
 		}
 	};
 
+	
+	
+	
+	
 
 
 	// Method for calculating Distance

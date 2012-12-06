@@ -86,6 +86,10 @@ public final class R {
         public static final int location_label=0x7f06000a;
         public static final int map_button_label=0x7f060019;
         public static final int map_name=0x7f060004;
+        public static final int map_speed_label=0x7f060029;
+        public static final int map_speed_text=0x7f06002a;
+        public static final int map_timer_label=0x7f06002b;
+        public static final int map_timer_text=0x7f06002c;
         public static final int menu_delete_all=0x7f060024;
         public static final int menu_exit=0x7f060002;
         public static final int menu_settings=0x7f060001;
@@ -108,15 +112,17 @@ public final class R {
         /**  Home Screen 
          */
         public static final int title_activity_home=0x7f06001a;
-        /**  History Screen 
+        /**  Trip Display Screen 
          */
         public static final int title_activity_journey_display=0x7f060025;
         public static final int title_activity_main=0x7f060003;
-        public static final int title_activity_map=0x7f060027;
+        /**  Map Screen 
+         */
+        public static final int title_activity_map=0x7f060028;
         /**  Navigation Screen 
          */
         public static final int title_activity_navigation=0x7f060009;
-        public static final int title_activity_test=0x7f060028;
+        public static final int title_activity_test=0x7f060027;
         public static final int view_map_button_label=0x7f06000c;
         public static final int view_past_rides_button_label=0x7f06001d;
     }

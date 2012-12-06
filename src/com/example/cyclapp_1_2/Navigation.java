@@ -30,7 +30,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Navigation extends Activity  implements OnClickListener {
+public class Navigation extends MapActivity  implements OnClickListener {
 
 	Button buttonSortDefault, buttonSort1;
 
@@ -128,15 +128,15 @@ public class Navigation extends Activity  implements OnClickListener {
 			}
 			break;
 		case R.id.map_button:
-			Intent m = new Intent(this, Map.class);
+			Intent map = new Intent(this, Map.class);
 			if (isRunning && !isPaused) {
-				m.putExtra("setTimer", true);
-				m.putExtra("myTimer", time);
+				map.putExtra("setTimer", true);
+				map.putExtra("myTimer", time);
 			} else {
-				m.putExtra("setTimer", false);
-				m.putExtra("myTimer", time);
+				map.putExtra("setTimer", false);
+				map.putExtra("myTimer", time);
 			}
-			startActivity(m);
+			startActivity(map);
 			break;
 		}
 	}
@@ -337,6 +337,7 @@ public class Navigation extends Activity  implements OnClickListener {
 			} else {
 				timeString += seconds;
 			}
+			
 			t.setText(timeString);
 		}
 	}
@@ -405,6 +406,12 @@ public class Navigation extends Activity  implements OnClickListener {
 			//this.finish();
 			return true;
 		}
+		return false;
+	}
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 

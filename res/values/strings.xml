@@ -47,11 +47,16 @@
     <string name="menu_sort_name">Sort by Name</string>
     <string name="menu_delete_all">Delete All</string>
 
-    <!-- History Screen -->
+    <!-- Trip Display Screen -->
     <string name="title_activity_journey_display">JourneyDisplay</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_map">Map</string>
     <string name="title_activity_test">Test</string>
-    
+
+    <!-- Map Screen -->
+    <string name="title_activity_map">Map</string>
+    <string name="map_speed_label">Speed: </string>
+    <string name="map_speed_text">0 mph     </string>
+    <string name="map_timer_label">Timer: </string>
+    <string name="map_timer_text">00:00:00</string>
 
 </resources>

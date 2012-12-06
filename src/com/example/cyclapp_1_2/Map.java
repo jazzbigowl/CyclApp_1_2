@@ -10,12 +10,14 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 
 import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class Map extends MapActivity {
+public class Map extends Navigation {
 	private MapView myMap;
 	private MapController controller;
 	private PositionOverlay myPositionOverlay;
@@ -49,11 +51,6 @@ public class Map extends MapActivity {
 		myMap.postInvalidate();
 	}
 
-	@Override
-	protected boolean isRouteDisplayed() {
-		// Required by MapActivity
-		return false;
-	}
 
 	private void initMapView() {
 		myMap = (MapView) findViewById(R.id.map);
@@ -97,42 +94,6 @@ public class Map extends MapActivity {
 		controller.animateTo(point);
 	}
 
-	// Method for calculating Distance
-	private double calculateDistance(double oldLat, double oldLon, double curLat, double curLon) {
-		// Using Pythagoras
-		double lat = 69.1 * Math.abs(curLat - oldLat);
-		double lon = 69.1 * Math.abs(curLon - oldLon) * Math.cos(curLat/57.3);
-		double distance = Math.sqrt(Math.pow(lat, 2) + Math.pow(lon, 2));
-		return distance;
-
-
-		// Method for calculating Distance using Haverside
-		// returns distance in miles
-		// http://introcs.cs.princeton.edu/java/12types/GreatCircle.java.html
-		//		double a = Math.pow(Math.sin((oldLat - curLat) / 2), 2) + Math.cos(curLat) * Math.cos(oldLat) * Math.pow(Math.sin((oldLon - curLon)/2), 2);
-		//		// great circle distance in radians
-		//		double angle2 = 2 * Math.asin(Math.min(1, Math.sqrt(a)));
-		//		// convert back to degrees
-		//		angle2 = Math.toDegrees(angle2);
-		//		// each degree on a great circle of Earth is 60 nautical miles
-		//		double distance2 = 60 * angle2;
-		//		return distance2;
-	}
-
-	// Method for calculating speed
-	public double calculateSpeed() {
-		if (oldLocationTime == 0) {
-			return 0;
-		} else {
-			// TimeDiff in hours
-			double TimeDiff   = ((curLocationTime - oldLocationTime) / (1000*60*60)); //hours
-			double Distance = calculateDistance(oldLat, oldLon, curLat, curLon);
-			double speed = (Distance / TimeDiff);
-			return speed;
-		}
-
-	}
-
 	private void setTimer() {
 		final long elapse = 1000;
 		Runnable t = new Runnable() {
@@ -172,4 +133,6 @@ public class Map extends MapActivity {
 		}
 		t.setText(timeString);
 	}
+	
+	
 }

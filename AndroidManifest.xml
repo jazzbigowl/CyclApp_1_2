@@ -57,6 +57,10 @@
             android:label="@string/map_name"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
+        <activity
+            android:name=".LocationDevice"
+            android:label="@string/title_activity_journey_display" >
+        </activity>
     </application>
 
 </manifest>
