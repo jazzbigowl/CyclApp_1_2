@@ -2,22 +2,18 @@ package com.example.cyclapp_1_2;
 
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class Map extends Navigation {
+public class Map extends MapActivity {
 	private MapView myMap;
 	private MapController controller;
 	private PositionOverlay myPositionOverlay;
@@ -36,9 +32,33 @@ public class Map extends Navigation {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
 		Bundle extras = getIntent().getExtras();
-		if (extras.getBoolean("setTimer")) {
+		if ((extras.getBoolean("isRunning")) && !(extras.getBoolean("isPaused"))) {
 			time = extras.getInt("myTimer");
 			setTimer();
+		} else if ((extras.getBoolean("isRunning")) && (extras.getBoolean("isPaused"))) {
+			time = extras.getInt("myTimer");	
+			TextView t = new TextView(this); 
+			t = (TextView)findViewById(R.id.MapTimeText); 
+			hours = time / 3600;
+			minutes = (time % 3600) / 60;
+			seconds = time % 60;
+			String timeString = "";
+			if (hours < 10) {
+				timeString += "0" + hours + ":";
+			} else {
+				timeString += hours + ":";
+			}
+			if (minutes < 10) {
+				timeString += "0" + minutes + ":";
+			} else {
+				timeString += minutes + ":";
+			}
+			if (seconds < 10) {
+				timeString += "0" + seconds;
+			} else {
+				timeString += seconds;
+			}
+			t.setText(timeString);
 		}
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		initMapView();
@@ -74,25 +94,25 @@ public class Map extends Navigation {
 		});
 		myMap.getOverlays().add(overlay);	
 
-		if (oldLocationTime != 0) {
-			oldLocationTime = curLocationTime;
-			curLocationTime = System.currentTimeMillis();
-			oldLat = curLat;
-			oldLon = curLon;
-			curLat = overlay.getMyLocation().getLatitudeE6()  / 1E6;
-			curLon = overlay.getMyLocation().getLongitudeE6() / 1E6;
-		}
-
-		double speed = calculateSpeed();
-		TextView t = new TextView(this); 
-		t = (TextView)findViewById(R.id.MapSpeedText); 
-		t.setText(speed + " mph");
+//		if (oldLocationTime != 0) {
+//			oldLocationTime = curLocationTime;
+//			curLocationTime = System.currentTimeMillis();
+//			oldLat = curLat;
+//			oldLon = curLon;
+//			curLat = overlay.getMyLocation().getLatitudeE6()  / 1E6;
+//			curLon = overlay.getMyLocation().getLongitudeE6() / 1E6;
+//		}
+//
+//		double speed = calculateSpeed();
+//		TextView t = new TextView(this); 
+//		t = (TextView)findViewById(R.id.MapSpeedText); 
+//		t.setText(speed + " mph");
 	}
 	
-	private void receiveLocation(Location location) {
-		GeoPoint point = new GeoPoint((int)(location.getLatitude() * 1E6), (int)(location.getLongitude() * 1E6));
-		controller.animateTo(point);
-	}
+//	private void receiveLocation(Location location) {
+//		GeoPoint point = new GeoPoint((int)(location.getLatitude() * 1E6), (int)(location.getLongitude() * 1E6));
+//		controller.animateTo(point);
+//	}
 
 	private void setTimer() {
 		final long elapse = 1000;
@@ -132,6 +152,12 @@ public class Map extends Navigation {
 			timeString += seconds;
 		}
 		t.setText(timeString);
+	}
+
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		return false;
 	}
 	
 	

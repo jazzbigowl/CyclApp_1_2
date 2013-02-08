@@ -3,8 +3,6 @@ package com.example.cyclapp_1_2;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.google.android.maps.MapActivity;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +29,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Navigation extends MapActivity  implements OnClickListener {
+public class Navigation extends Activity  implements OnClickListener {
 
 	Button buttonSortDefault, buttonSort1;
 
@@ -130,15 +129,70 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		case R.id.map_button:
 			Intent map = new Intent(this, Map.class);
 			if (isRunning && !isPaused) {
-				map.putExtra("setTimer", true);
+				map.putExtra("isRunning", true);
+				map.putExtra("isPaused", false);
+				map.putExtra("myTimer", time);
+			} else if (isRunning && isPaused){
+				map.putExtra("isRunning", true);
+				map.putExtra("isPaused", true);
 				map.putExtra("myTimer", time);
 			} else {
-				map.putExtra("setTimer", false);
+				map.putExtra("isRunning", false);
+				map.putExtra("isPaused", true);
 				map.putExtra("myTimer", time);
 			}
 			startActivity(map);
 			break;
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+//	   Intent setIntent = new Intent(Intent.ACTION_MAIN);
+//	   setIntent.addCategory(Intent.CATEGORY_HOME);
+//	   setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//	   startActivity(setIntent);
+	   
+	   
+	   AlertDialog.Builder myDialog
+		= new AlertDialog.Builder(Navigation.this);
+
+		myDialog.setTitle("Warning!");
+
+		TextView dialogTxt_id = new TextView(Navigation.this);
+		LayoutParams dialogTxt_idLayoutParams
+		= new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		dialogTxt_id.setLayoutParams(dialogTxt_idLayoutParams);
+		dialogTxt_id.setText(String.valueOf("If you exit this screen, you will lose your trip details done so far." +
+											"\nAre you sure you want to quit?"));
+
+
+		//				final EditText dialogName_id = new EditText(Navigation.this);
+		//				@SuppressWarnings("deprecation")
+		//				LayoutParams dialogName_idLayoutParams
+		//				= new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		//				dialogName_id.setLayoutParams(dialogName_idLayoutParams);
+
+
+		LinearLayout layout = new LinearLayout(Navigation.this);
+		layout.setOrientation(LinearLayout.VERTICAL);
+		//		layout.addView(dialogTxt_id);
+
+		layout.addView(dialogTxt_id);
+		myDialog.setView(layout);
+
+		myDialog.setNegativeButton("Yes", new DialogInterface.OnClickListener() {
+			// do something when the button is clicked
+			public void onClick(DialogInterface arg0, int arg1) {
+				Navigation.this.finish();
+			}
+		});
+		myDialog.setPositiveButton("No", new DialogInterface.OnClickListener() {
+			// do something when the button is clicked
+			public void onClick(DialogInterface arg0, int arg1) {	
+			}
+		});
+		myDialog.show();
 	}
 
 	private void getNameDialog() {
@@ -406,12 +460,6 @@ public class Navigation extends MapActivity  implements OnClickListener {
 			//this.finish();
 			return true;
 		}
-		return false;
-	}
-
-	@Override
-	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

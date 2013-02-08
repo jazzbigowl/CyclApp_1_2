@@ -1,14 +1,21 @@
 package com.example.cyclapp_1_2;
 
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class Home extends Activity implements OnClickListener {
 
@@ -39,8 +46,58 @@ public class Home extends Activity implements OnClickListener {
 			startActivity(t);
 			break;
 		case R.id.sat_nav_button:
-			Intent st = new Intent(this, Navigation.class);
-			startActivity(st);
+			LocationManager alm = (LocationManager)this.getSystemService( Context.LOCATION_SERVICE );
+			if( alm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER ) ) {
+				//GPS Enabled
+				Intent st = new Intent(this, Navigation.class);
+				startActivity(st);
+			} else {
+				AlertDialog.Builder myDialog
+				= new AlertDialog.Builder(Home.this);
+
+				myDialog.setTitle("Warning!");
+
+				TextView dialogTxt_id = new TextView(Home.this);
+				LayoutParams dialogTxt_idLayoutParams
+				= new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				dialogTxt_id.setLayoutParams(dialogTxt_idLayoutParams);
+				dialogTxt_id.setText(String.valueOf(" You must enable GPS on your device."));
+
+
+				//				final EditText dialogName_id = new EditText(Home.this);
+				//				@SuppressWarnings("deprecation")
+				//				LayoutParams dialogName_idLayoutParams
+				//				= new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+				//				dialogName_id.setLayoutParams(dialogName_idLayoutParams);
+
+
+				LinearLayout layout = new LinearLayout(Home.this);
+				layout.setOrientation(LinearLayout.VERTICAL);
+				//		layout.addView(dialogTxt_id);
+
+				layout.addView(dialogTxt_id);
+				myDialog.setView(layout);
+
+				myDialog.setNegativeButton("Settings", new DialogInterface.OnClickListener() {
+					// do something when the button is clicked
+					public void onClick(DialogInterface arg0, int arg1) {
+						Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+						startActivity(intent);
+					}
+				});
+				myDialog.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+					// do something when the button is clicked
+					public void onClick(DialogInterface arg0, int arg1) {
+						
+					}
+				});
+
+				myDialog.show();
+				
+			}
+
+			//			Intent st = new Intent(this, Navigation.class);
+			//			startActivity(st);
 			break;
 		case R.id.view_past_rides_button:
 			Intent h = new Intent(this, History.class);
