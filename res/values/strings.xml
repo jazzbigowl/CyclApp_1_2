@@ -31,6 +31,12 @@
     <string name="average_speed_title">Average speed:</string>
     <string name="average_speed_label">Press start!</string>
     <string name="map_button_label">Map</string>
+    <string name="mySpeedTitleText">Speed</string>
+    <string name="myLocationTitleText">Your Current Position is:</string>
+    <string name="myDistanceTitleText">Distance</string>
+    <string name="mySpeedText">0</string>
+    <string name="myDistanceText">0</string>
+    <string name="myLocationText">No Location</string>
 
     <!-- Home Screen -->
     <string name="title_activity_home">CycleApp bithes!</string>

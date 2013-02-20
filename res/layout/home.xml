@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dip"
+            android:layout_margin="10dip"
             android:text="@string/test_button_label" >
         </Button>
         
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dip"
+            android:layout_margin="10dip"
             android:text="@string/sat_nav_button_label" >
         </Button>
 
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dip"
+            android:layout_margin="10dip"
             android:text="@string/view_past_rides_button_label" >
         </Button>
 
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dip"
+            android:layout_margin="10dip"
             android:text="@string/about_button_label" >
         </Button>
 
@@ -60,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dip"
+            android:layout_margin="10dip"
             android:text="@string/exit_button_label" >
         </Button>
     </LinearLayout>

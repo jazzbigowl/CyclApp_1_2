@@ -94,18 +94,36 @@ public class Navigation extends Activity  implements OnClickListener {
 		resumebut.setOnClickListener(Navigation.this);
 		View mapbut = findViewById(R.id.map_button);
 		mapbut.setOnClickListener(Navigation.this);
+		
+		stopbut.setEnabled(false);
+		pausebut.setEnabled(false);
+		resumebut.setEnabled(false);
 	}
 
 	public void onClick(View v) {
+		View startbut = findViewById(R.id.start_button);
+		View stopbut = findViewById(R.id.stop_button);
+		View pausebut = findViewById(R.id.pause_button);
+		View resumebut = findViewById(R.id.resume_button);
+		View mapbut = findViewById(R.id.map_button);
+		
+		
+		
 		switch (v.getId()) {
 		case R.id.start_button:
 			// User presses Start
+			startbut.setEnabled(false);
+			pausebut.setEnabled(true);
+			stopbut.setEnabled(true);
 			isRunning = true;
 			startLocationTime = System.currentTimeMillis();
 			setTimer();
 			break;
 		case R.id.stop_button:
 			// User presses Stop
+			stopbut.setEnabled(false);
+			pausebut.setEnabled(false);
+			resumebut.setEnabled(false);
 			isRunning = false;
 			if (Locations.size() != 0) {
 				startLocation = Locations.get(0);
@@ -116,11 +134,17 @@ public class Navigation extends Activity  implements OnClickListener {
 			break;
 		case R.id.pause_button:
 			// User presses pause
+			stopbut.setEnabled(true);
+			pausebut.setEnabled(false);
+			resumebut.setEnabled(true);
 			if (isRunning) {
 				isPaused = true;
 			}
 			break;
 		case R.id.resume_button:
+			stopbut.setEnabled(true);
+			pausebut.setEnabled(true);
+			resumebut.setEnabled(false);
 			// User presses resume
 			if (isRunning) {
 				isPaused = false;
@@ -145,16 +169,16 @@ public class Navigation extends Activity  implements OnClickListener {
 			break;
 		}
 	}
-	
+
 	@Override
 	public void onBackPressed() {
-//	   Intent setIntent = new Intent(Intent.ACTION_MAIN);
-//	   setIntent.addCategory(Intent.CATEGORY_HOME);
-//	   setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//	   startActivity(setIntent);
-	   
-	   
-	   AlertDialog.Builder myDialog
+		//	   Intent setIntent = new Intent(Intent.ACTION_MAIN);
+		//	   setIntent.addCategory(Intent.CATEGORY_HOME);
+		//	   setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		//	   startActivity(setIntent);
+
+
+		AlertDialog.Builder myDialog
 		= new AlertDialog.Builder(Navigation.this);
 
 		myDialog.setTitle("Warning!");
@@ -164,7 +188,7 @@ public class Navigation extends Activity  implements OnClickListener {
 		= new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		dialogTxt_id.setLayoutParams(dialogTxt_idLayoutParams);
 		dialogTxt_id.setText(String.valueOf("If you exit this screen, you will lose your trip details done so far." +
-											"\nAre you sure you want to quit?"));
+				"\nAre you sure you want to quit?"));
 
 
 		//				final EditText dialogName_id = new EditText(Navigation.this);
@@ -294,10 +318,12 @@ public class Navigation extends Activity  implements OnClickListener {
 	}
 
 	private void updateWithNewLocation(Location location) {
-		TextView myLocationText;
 		TextView mySpeedText;
-		myLocationText = (TextView)findViewById(R.id.myLocationText);
+		TextView myLocationText;
+		TextView myDistanceText;
 		mySpeedText = (TextView)findViewById(R.id.mySpeedText);
+		myLocationText = (TextView)findViewById(R.id.myLocationText);
+		myDistanceText = (TextView)findViewById(R.id.myDistanceText);
 
 
 		String latLongString = "No location found";
@@ -314,14 +340,17 @@ public class Navigation extends Activity  implements OnClickListener {
 			latLongString = "Lat:" + lat + "\nLong:" + lng;
 		}
 
-		myLocationText.setText("Your Current Position is:\n" +
-				latLongString);
 		double speed = calculateSpeed();
 		if ((isRunning) && (!isPaused)) {
 			Speeds.add(speed);
 		}
-		mySpeedText.setText("Your Current Speed is:\n" +
-				speed);
+		mySpeedText.setText(Double.toString(speed));
+		myLocationText.setText(latLongString);
+		if (Locations.size() != 0) {
+			myDistanceText.setText(Double.toString(calculateDistance(Locations.get(0).getLatitude(), Locations.get(0).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude())));
+		} else {
+			myDistanceText.setText("0");
+		}
 	}
 
 	private final LocationListener locationListener = new LocationListener() {
@@ -343,10 +372,10 @@ public class Navigation extends Activity  implements OnClickListener {
 		}
 		public void onStatusChanged(String provider, int status, 
 				Bundle extras) {
-			Toast.makeText(
-					Navigation.this,
-					"Status Changed.",
-					Toast.LENGTH_LONG).show();
+//			Toast.makeText(
+//					Navigation.this,
+//					"Status Changed.",
+//					Toast.LENGTH_LONG).show();
 		}
 	};
 
@@ -391,7 +420,7 @@ public class Navigation extends Activity  implements OnClickListener {
 			} else {
 				timeString += seconds;
 			}
-			
+
 			t.setText(timeString);
 		}
 	}
