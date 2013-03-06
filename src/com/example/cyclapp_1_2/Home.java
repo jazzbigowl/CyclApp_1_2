@@ -2,12 +2,14 @@ package com.example.cyclapp_1_2;
 
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,15 @@ public class Home extends Activity implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
+
+
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Home.this);
+		String namePref = prefs.getString("name", "");
+		if (namePref != "") {
+			TextView welcomeBanner;
+			welcomeBanner = (TextView)findViewById(R.id.home_title);
+			welcomeBanner.setText("Welcome " + namePref);
+		}
 
 		// Listeners for Buttons
 		View satNat = findViewById(R.id.sat_nav_button);
@@ -88,12 +99,12 @@ public class Home extends Activity implements OnClickListener {
 				myDialog.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
 					// do something when the button is clicked
 					public void onClick(DialogInterface arg0, int arg1) {
-						
+
 					}
 				});
 
 				myDialog.show();
-				
+
 			}
 
 			//			Intent st = new Intent(this, Navigation.class);

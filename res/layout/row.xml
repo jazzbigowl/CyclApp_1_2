@@ -4,37 +4,13 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/text1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:padding="2dip"
-            android:text="#" />
-
-        <TextView
-            android:id="@+id/id"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:padding="2dip"
-            android:paddingRight="10dip" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:padding="2dip"
-            android:paddingRight="10dip"
-            android:text="-" />
-
-        <TextView
-            android:id="@+id/text1"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:padding="2dip" />
-    </LinearLayout>
+        android:layout_height="fill_parent"
+        android:padding="2dip"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/text2"

@@ -34,8 +34,8 @@ public class History extends Activity {
 		switch (item.getItemId()) {
 		case R.id.sort_date:
 			cursor = mySQLiteAdapterReader.queueAll_SortBy_DATE();
-			String[] from1 = new String[]{SQLiteAdapter.KEY_ID, SQLiteAdapter.KEY_NAME, SQLiteAdapter.KEY_DATE};
-			int[] to1 = new int[]{R.id.id, R.id.text1, R.id.text2};
+			String[] from1 = new String[]{SQLiteAdapter.KEY_NAME, SQLiteAdapter.KEY_DATE};
+			int[] to1 = new int[]{R.id.text1, R.id.text2};
 			cursorAdapter =
 					new SimpleCursorAdapter(History.this, R.layout.row, cursor, from1, to1);
 			listContent.setAdapter(cursorAdapter);
@@ -44,7 +44,7 @@ public class History extends Activity {
 		case R.id.sort_name:
 			cursor = mySQLiteAdapterReader.queueAll_SortBy_NAME();
 			String[] from2 = new String[]{SQLiteAdapter.KEY_ID, SQLiteAdapter.KEY_NAME, SQLiteAdapter.KEY_DATE};
-			int[] to2 = new int[]{R.id.id, R.id.text1, R.id.text2};
+			int[] to2 = new int[]{R.id.text1, R.id.text2};
 			cursorAdapter =
 					new SimpleCursorAdapter(History.this, R.layout.row, cursor, from2, to2);
 			listContent.setAdapter(cursorAdapter);
@@ -98,8 +98,8 @@ public class History extends Activity {
 		mySQLiteAdapterReader.openToRead();
 
 		cursor = mySQLiteAdapterReader.queueAll();
-		String[] from = new String[]{SQLiteAdapter.KEY_ID, SQLiteAdapter.KEY_NAME, SQLiteAdapter.KEY_DATE};
-		int[] to = new int[]{R.id.id, R.id.text1, R.id.text2};
+		String[] from = new String[]{SQLiteAdapter.KEY_NAME, SQLiteAdapter.KEY_DATE};
+		int[] to = new int[]{R.id.text1, R.id.text2};
 		cursorAdapter =	new SimpleCursorAdapter(this, R.layout.row, cursor, from, to);
 		listContent.setAdapter(cursorAdapter);
 		listContent.setOnItemClickListener(listContentOnItemClickListener);

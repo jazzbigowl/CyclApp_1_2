@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/start_button_label" >
+            android:text="@string/start_stop_button_label" >
         </Button>
 
         <Button
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/stop_button_label" >
+            android:text="@string/start_stop_button_label" >
         </Button>
     </LinearLayout>
 
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/pause_button_label" >
+            android:text="@string/pause_resume_button_label" >
         </Button>
 
         <Button
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="@string/resume_button_label" >
+            android:text="@string/pause_resume_button_label" >
         </Button>
     </LinearLayout>
 

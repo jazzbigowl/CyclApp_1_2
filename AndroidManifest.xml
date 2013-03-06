@@ -61,6 +61,10 @@
             android:name=".LocationDevice"
             android:label="@string/title_activity_journey_display" >
         </activity>
+        <activity
+            android:name="Preferences"
+            android:label="@string/title_activity_preferences" >
+        </activity>
     </application>
 
 </manifest>

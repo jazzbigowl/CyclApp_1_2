@@ -1,13 +1,14 @@
 package com.example.cyclapp_1_2;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Criteria;
 import android.location.Location;
@@ -15,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,70 +86,50 @@ public class Navigation extends Activity  implements OnClickListener {
 
 		locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
 
-		View startbut = findViewById(R.id.start_button);
-		startbut.setOnClickListener(Navigation.this);
-		View stopbut = findViewById(R.id.stop_button);
-		stopbut.setOnClickListener(Navigation.this);
-		View pausebut = findViewById(R.id.pause_button);
-		pausebut.setOnClickListener(Navigation.this);
-		View resumebut = findViewById(R.id.resume_button);
-		resumebut.setOnClickListener(Navigation.this);
+		View startStopButton = findViewById(R.id.start_stop_button);
+		startStopButton.setOnClickListener(Navigation.this);
+		View pauseResumeButton = findViewById(R.id.pause_resume_button);
+		pauseResumeButton.setOnClickListener(Navigation.this);
 		View mapbut = findViewById(R.id.map_button);
 		mapbut.setOnClickListener(Navigation.this);
-		
-		stopbut.setEnabled(false);
-		pausebut.setEnabled(false);
-		resumebut.setEnabled(false);
+
+		pauseResumeButton.setEnabled(false);
 	}
 
 	public void onClick(View v) {
-		View startbut = findViewById(R.id.start_button);
-		View stopbut = findViewById(R.id.stop_button);
-		View pausebut = findViewById(R.id.pause_button);
-		View resumebut = findViewById(R.id.resume_button);
-		View mapbut = findViewById(R.id.map_button);
-		
-		
-		
+		Button startStopButton = (Button) findViewById(R.id.start_stop_button);
+		Button pauseResumeButton = (Button) findViewById(R.id.pause_resume_button);
+
 		switch (v.getId()) {
-		case R.id.start_button:
-			// User presses Start
-			startbut.setEnabled(false);
-			pausebut.setEnabled(true);
-			stopbut.setEnabled(true);
-			isRunning = true;
-			startLocationTime = System.currentTimeMillis();
-			setTimer();
-			break;
-		case R.id.stop_button:
-			// User presses Stop
-			stopbut.setEnabled(false);
-			pausebut.setEnabled(false);
-			resumebut.setEnabled(false);
-			isRunning = false;
-			if (Locations.size() != 0) {
-				startLocation = Locations.get(0);
-			}
-			endLocation = curLocation;
-			endLocationTime = System.currentTimeMillis();
-			getNameDialog();
-			break;
-		case R.id.pause_button:
-			// User presses pause
-			stopbut.setEnabled(true);
-			pausebut.setEnabled(false);
-			resumebut.setEnabled(true);
-			if (isRunning) {
-				isPaused = true;
+		case R.id.start_stop_button:
+			// User presses Start Stop button
+			if (isRunning.equals(false)) { // User presses start
+				startStopButton.setText("STOP");
+				pauseResumeButton.setEnabled(true);
+				isRunning = true;
+				startLocationTime = System.currentTimeMillis();
+				setTimer();
+			} else if (isRunning.equals(true)) { // User presses stop
+				pauseResumeButton.setEnabled(false);
+				isRunning = false;
+				if (Locations.size() != 0) {
+					startLocation = Locations.get(0);
+				}
+				endLocation = curLocation;
+				endLocationTime = System.currentTimeMillis();
+				getNameDialog();
 			}
 			break;
-		case R.id.resume_button:
-			stopbut.setEnabled(true);
-			pausebut.setEnabled(true);
-			resumebut.setEnabled(false);
-			// User presses resume
+		case R.id.pause_resume_button:
+			// User presses pause resume button
 			if (isRunning) {
-				isPaused = false;
+				if (isPaused.equals(false)) {
+					pauseResumeButton.setText("RESUME");
+					isPaused = true;
+				} else if (isPaused.equals(true)) {
+					pauseResumeButton.setText("PAUSE");
+					isPaused = false;
+				}
 			}
 			break;
 		case R.id.map_button:
@@ -335,22 +317,40 @@ public class Navigation extends Activity  implements OnClickListener {
 			if ((isRunning) && (!isPaused)) {
 				Locations.add(location);
 			}
-			double lat = location.getLatitude();
-			double lng = location.getLongitude();
+			double lat = round(location.getLatitude(), 6, BigDecimal.ROUND_HALF_UP);
+			double lng = round(location.getLongitude(), 6, BigDecimal.ROUND_HALF_UP);
 			latLongString = "Lat:" + lat + "\nLong:" + lng;
 		}
 
 		double speed = calculateSpeed();
 		if ((isRunning) && (!isPaused)) {
+			speed = round(speed, 2, BigDecimal.ROUND_HALF_UP);
 			Speeds.add(speed);
 		}
-		mySpeedText.setText(Double.toString(speed));
+		if (getSpeedMeasurement().equals("mph")) {
+			mySpeedText.setText(Double.toString(speed) + " " + getSpeedMeasurement());
+		} else {
+			mySpeedText.setText(Double.toString(round((speed* 1.60934), 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
+		}
+
 		myLocationText.setText(latLongString);
 		if (Locations.size() != 0) {
-			myDistanceText.setText(Double.toString(calculateDistance(Locations.get(0).getLatitude(), Locations.get(0).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude())));
+			double distance = calculateDistance(Locations.get(0).getLatitude(), Locations.get(0).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude());
+			distance = round(distance, 2, BigDecimal.ROUND_HALF_UP);
+			if (getDistanceMeasurement().equals("mi")) {
+				myDistanceText.setText(Double.toString(distance) + " " + getDistanceMeasurement());
+			} else {
+				myDistanceText.setText(Double.toString(round((distance* 1.60934), 2, BigDecimal.ROUND_HALF_UP)) + " " + getDistanceMeasurement());
+			}
 		} else {
-			myDistanceText.setText("0");
+			myDistanceText.setText("0" + " " +getDistanceMeasurement());
 		}
+	}
+
+	public static double round(double unrounded, int precision, int roundingMode) {
+		BigDecimal bd = new BigDecimal(unrounded);
+		BigDecimal rounded = bd.setScale(precision, roundingMode);
+		return rounded.doubleValue();
 	}
 
 	private final LocationListener locationListener = new LocationListener() {
@@ -372,10 +372,10 @@ public class Navigation extends Activity  implements OnClickListener {
 		}
 		public void onStatusChanged(String provider, int status, 
 				Bundle extras) {
-//			Toast.makeText(
-//					Navigation.this,
-//					"Status Changed.",
-//					Toast.LENGTH_LONG).show();
+			//			Toast.makeText(
+			//					Navigation.this,
+			//					"Status Changed.",
+			//					Toast.LENGTH_LONG).show();
 		}
 	};
 
@@ -461,6 +461,79 @@ public class Navigation extends Activity  implements OnClickListener {
 
 	}
 
+	// Method that returns Measurement for distance from preferences
+	private String getDistanceMeasurement() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Navigation.this);
+		String listPrefs = prefs.getString("listpref", "Please select a measurement in settings.");
+		if (listPrefs.equals("Miles is selected")) {
+			return "mi";
+		} else if (listPrefs.equals("Kilometres is selected")) {
+			return "km";
+		} else {
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+			// set title
+			alertDialogBuilder.setTitle("No Measurement Chosen!");
+			// set dialog message
+			alertDialogBuilder
+			.setMessage("Please choose a measurement in settings.")
+			.setCancelable(false)
+			.setPositiveButton("Close",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// if this button is clicked, close
+					// current activity
+					dialog.cancel();	
+				}
+			})
+			.setNegativeButton("Settings",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// Go to Settings
+					startActivity(new Intent(Navigation.this, Preferences.class));
+				}
+			});
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+			// show it
+			alertDialog.show();
+			return listPrefs;
+		}
+	}
+
+	// Method that returns Measurement for speed from preferences
+	private String getSpeedMeasurement() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Navigation.this);
+		String listPrefs = prefs.getString("listpref", "Please select a measurement in settings.");
+		if (listPrefs.equals("Miles is selected")) {
+			return "mph";
+		} else if (listPrefs.equals("Kilometres is selected")) {
+			return "kph";
+		} else {
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+			// set title
+			alertDialogBuilder.setTitle("No Measurement Chosen!");
+			// set dialog message
+			alertDialogBuilder
+			.setMessage("Please choose a measurement in settings.")
+			.setCancelable(false)
+			.setPositiveButton("Close",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// if this button is clicked, close
+					// current activity
+					dialog.cancel();	
+				}
+			})
+			.setNegativeButton("Settings",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int id) {
+					// Go to Settings
+					startActivity(new Intent(Navigation.this, Preferences.class));
+				}
+			});
+			// create alert dialog
+			AlertDialog alertDialog = alertDialogBuilder.create();
+			// show it
+			alertDialog.show();
+			return listPrefs;
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

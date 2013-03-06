@@ -92,14 +92,10 @@ public class Test extends MapActivity  implements OnClickListener {
 
 		locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
 
-		View startbut = findViewById(R.id.start_button);
-		startbut.setOnClickListener(Test.this);
-		View stopbut = findViewById(R.id.stop_button);
-		stopbut.setOnClickListener(Test.this);
-		View pausebut = findViewById(R.id.pause_button);
-		pausebut.setOnClickListener(Test.this);
-		View resumebut = findViewById(R.id.resume_button);
-		resumebut.setOnClickListener(Test.this);
+		View startStopButton = findViewById(R.id.start_stop_button);
+		startStopButton.setOnClickListener(Test.this);
+		View pauseResumeButton = findViewById(R.id.pause_resume_button);
+		pauseResumeButton.setOnClickListener(Test.this);
 		View mapbut = findViewById(R.id.map_button);
 		mapbut.setOnClickListener(Test.this);
 
@@ -116,38 +112,57 @@ public class Test extends MapActivity  implements OnClickListener {
 	}
 
 	public void onClick(View v) {
+		Button startStopButton = (Button) findViewById(R.id.start_stop_button);
+		Button pauseResumeButton = (Button) findViewById(R.id.pause_resume_button);
+
 		switch (v.getId()) {
-		case R.id.start_button:
-			// User presses Start
-			isRunning = true;
-			startLocationTime = System.currentTimeMillis();
-			setTimer();
-			break;
-		case R.id.stop_button:
-			// User presses Stop
-			isRunning = false;
-			if (Locations.size() != 0) {
-				startLocation = Locations.get(0);
-			}
-			endLocation = curLocation;
-			endLocationTime = System.currentTimeMillis();
-			getNameDialog();
-			break;
-		case R.id.pause_button:
-			// User presses pause
-			if (isRunning) {
-				isPaused = true;
+		case R.id.start_stop_button:
+			// User presses Start Stop button
+			if (isRunning.equals(false)) { // User presses start
+				startStopButton.setText("STOP");
+				pauseResumeButton.setEnabled(true);
+				isRunning = true;
+				startLocationTime = System.currentTimeMillis();
+				setTimer();
+			} else if (isRunning.equals(true)) { // User presses stop
+				pauseResumeButton.setEnabled(false);
+				isRunning = false;
+				if (Locations.size() != 0) {
+					startLocation = Locations.get(0);
+				}
+				endLocation = curLocation;
+				endLocationTime = System.currentTimeMillis();
+				getNameDialog();
 			}
 			break;
-		case R.id.resume_button:
-			// User presses resume
+		case R.id.pause_resume_button:
+			// User presses pause resume button
 			if (isRunning) {
-				isPaused = false;
+				if (isPaused.equals(false)) {
+					pauseResumeButton.setText("RESUME");
+					isPaused = true;
+				} else if (isPaused.equals(true)) {
+					pauseResumeButton.setText("PAUSE");
+					isPaused = false;
+				}
 			}
 			break;
 		case R.id.map_button:
-			Intent m = new Intent(this, Map.class);
-			startActivity(m);
+			Intent map = new Intent(this, Map.class);
+			if (isRunning && !isPaused) {
+				map.putExtra("isRunning", true);
+				map.putExtra("isPaused", false);
+				map.putExtra("myTimer", time);
+			} else if (isRunning && isPaused){
+				map.putExtra("isRunning", true);
+				map.putExtra("isPaused", true);
+				map.putExtra("myTimer", time);
+			} else {
+				map.putExtra("isRunning", false);
+				map.putExtra("isPaused", true);
+				map.putExtra("myTimer", time);
+			}
+			startActivity(map);
 			break;
 		}
 	}
@@ -251,10 +266,12 @@ public class Test extends MapActivity  implements OnClickListener {
 	}
 
 	private void updateWithNewLocation(Location location) {
-		TextView myLocationText;
 		TextView mySpeedText;
-		myLocationText = (TextView)findViewById(R.id.myLocationText);
+		TextView myLocationText;
+		TextView myDistanceText;
 		mySpeedText = (TextView)findViewById(R.id.mySpeedText);
+		myLocationText = (TextView)findViewById(R.id.myLocationText);
+		myDistanceText = (TextView)findViewById(R.id.myDistanceText);
 
 
 		String latLongString = "No location found";
@@ -271,14 +288,17 @@ public class Test extends MapActivity  implements OnClickListener {
 			latLongString = "Lat:" + lat + "\nLong:" + lng;
 		}
 
-		myLocationText.setText("Your Current Position is:\n" +
-				latLongString);
 		double speed = calculateSpeed();
 		if ((isRunning) && (!isPaused)) {
 			Speeds.add(speed);
 		}
-		mySpeedText.setText("Your Current Speed is:\n" +
-				speed);
+		mySpeedText.setText(Double.toString(speed));
+		myLocationText.setText(latLongString);
+		if (Locations.size() != 0) {
+			myDistanceText.setText(Double.toString(calculateDistance(Locations.get(0).getLatitude(), Locations.get(0).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude())));
+		} else {
+			myDistanceText.setText("0");
+		}
 	}
 
 	private final LocationListener locationListener = new LocationListener() {
@@ -338,26 +358,26 @@ public class Test extends MapActivity  implements OnClickListener {
 	}
 
 	// Method for calculating Distance
-		private double calculateDistance(double oldLat, double oldLon, double curLat, double curLon) {
-			// Using Pythagoras
-			double lat = 69.1 * Math.abs(curLat - oldLat);
-			double lon = 69.1 * Math.abs(curLon - oldLon) * Math.cos(curLat/57.3);
-			double distance = Math.sqrt(Math.pow(lat, 2) + Math.pow(lon, 2));
-			return distance;
+	private double calculateDistance(double oldLat, double oldLon, double curLat, double curLon) {
+		// Using Pythagoras
+		double lat = 69.1 * Math.abs(curLat - oldLat);
+		double lon = 69.1 * Math.abs(curLon - oldLon) * Math.cos(curLat/57.3);
+		double distance = Math.sqrt(Math.pow(lat, 2) + Math.pow(lon, 2));
+		return distance;
 
 
-			// Method for calculating Distance using Haverside
-			// returns distance in miles
-			// http://introcs.cs.princeton.edu/java/12types/GreatCircle.java.html
-			//		double a = Math.pow(Math.sin((oldLat - curLat) / 2), 2) + Math.cos(curLat) * Math.cos(oldLat) * Math.pow(Math.sin((oldLon - curLon)/2), 2);
-			//		// great circle distance in radians
-			//		double angle2 = 2 * Math.asin(Math.min(1, Math.sqrt(a)));
-			//		// convert back to degrees
-			//		angle2 = Math.toDegrees(angle2);
-			//		// each degree on a great circle of Earth is 60 nautical miles
-			//		double distance2 = 60 * angle2;
-			//		return distance2;
-		}
+		// Method for calculating Distance using Haverside
+		// returns distance in miles
+		// http://introcs.cs.princeton.edu/java/12types/GreatCircle.java.html
+		//		double a = Math.pow(Math.sin((oldLat - curLat) / 2), 2) + Math.cos(curLat) * Math.cos(oldLat) * Math.pow(Math.sin((oldLon - curLon)/2), 2);
+		//		// great circle distance in radians
+		//		double angle2 = 2 * Math.asin(Math.min(1, Math.sqrt(a)));
+		//		// convert back to degrees
+		//		angle2 = Math.toDegrees(angle2);
+		//		// each degree on a great circle of Earth is 60 nautical miles
+		//		double distance2 = 60 * angle2;
+		//		return distance2;
+	}
 
 	// Method for calculating speed
 	public double calculateSpeed() {
