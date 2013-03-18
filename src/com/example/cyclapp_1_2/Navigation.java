@@ -270,7 +270,8 @@ public class Navigation extends Activity  implements OnClickListener {
 			String data_distance = Double.toString(tripDistance);
 			String data_date = new Date().toString();
 			String data_speeds = speedsToString();
-			mySQLiteAdapterWriter.insert(data_name, data_time, data_start_lat, data_start_lon, data_end_lat, data_end_lon, data_ave_speed, data_start_time, data_end_time, data_distance, data_date, data_speeds);
+			String data_locations = locationsToString();
+			mySQLiteAdapterWriter.insert(data_name, data_time, data_start_lat, data_start_lon, data_end_lat, data_end_lon, data_ave_speed, data_start_time, data_end_time, data_distance, data_date, data_speeds, data_locations);
 			Toast.makeText(
 					Navigation.this,
 					"Item added to database.",
@@ -291,6 +292,16 @@ public class Navigation extends Activity  implements OnClickListener {
 		speedsAsString = speedsAsString.substring(0, speedsAsString.length() - 1);
 		speedsAsString += "$";
 		return speedsAsString;
+	}
+	
+	private String locationsToString() {
+		String locationsAsString = "";
+		for (Location l: Locations) {
+			locationsAsString += Double.toString(l.getLatitude()) + "," + Double.toString(l.getLongitude()) + ",";
+		}
+		locationsAsString = locationsAsString.substring(0, locationsAsString.length() - 1);
+		locationsAsString += "$";
+		return locationsAsString;
 	}
 
 	@Override
@@ -324,11 +335,10 @@ public class Navigation extends Activity  implements OnClickListener {
 
 		double speed = calculateSpeed();
 		if ((isRunning) && (!isPaused)) {
-			speed = round(speed, 2, BigDecimal.ROUND_HALF_UP);
 			Speeds.add(speed);
 		}
 		if (getSpeedMeasurement().equals("mph")) {
-			mySpeedText.setText(Double.toString(speed) + " " + getSpeedMeasurement());
+			mySpeedText.setText(Double.toString(round(speed, 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
 		} else {
 			mySpeedText.setText(Double.toString(round((speed* 1.60934), 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
 		}

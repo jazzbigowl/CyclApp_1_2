@@ -21,7 +21,7 @@ public class SQLiteAdapterReader extends SQLiteAdapter {
 	public Cursor queueAll(){
 		String[] columns = new String[]{KEY_ID, KEY_NAME, 
 				KEY_DATE, KEY_TRIP_TIME, KEY_TRIP_DISTANCE, KEY_START_TIME, 
-				KEY_END_TIME, KEY_AVERAGE_SPEED, KEY_START_LAT, KEY_START_LON, KEY_END_LAT, KEY_END_LON, KEY_SPEEDS};
+				KEY_END_TIME, KEY_AVERAGE_SPEED, KEY_START_LAT, KEY_START_LON, KEY_END_LAT, KEY_END_LON, KEY_SPEEDS, KEY_LOCATIONS};
 		Cursor cursor = sqLiteDatabase.query(MYDATABASE_TABLE, columns,
 				null, null, null, null, null);
 		cursor.moveToFirst();
@@ -38,7 +38,7 @@ public class SQLiteAdapterReader extends SQLiteAdapter {
 	public Cursor queueAll_SortBy_NAME(){
 		String[] columns = new String[]{KEY_ID, KEY_NAME, 
 				KEY_DATE, KEY_TRIP_TIME, KEY_TRIP_DISTANCE, KEY_START_TIME, 
-				KEY_END_TIME, KEY_AVERAGE_SPEED, KEY_START_LAT, KEY_START_LON, KEY_END_LAT, KEY_END_LON, KEY_SPEEDS};
+				KEY_END_TIME, KEY_AVERAGE_SPEED, KEY_START_LAT, KEY_START_LON, KEY_END_LAT, KEY_END_LON, KEY_SPEEDS, KEY_LOCATIONS};
 		Cursor cursor = sqLiteDatabase.query(MYDATABASE_TABLE, columns, 
 				null, null, null, null, KEY_NAME);
 		cursor.moveToFirst();
@@ -49,7 +49,7 @@ public class SQLiteAdapterReader extends SQLiteAdapter {
 	public Cursor queueAll_SortBy_DATE(){
 		String[] columns = new String[]{KEY_ID, KEY_NAME, 
 				KEY_DATE, KEY_TRIP_TIME, KEY_TRIP_DISTANCE, KEY_START_TIME, 
-				KEY_END_TIME, KEY_AVERAGE_SPEED, KEY_START_LAT, KEY_START_LON, KEY_END_LAT, KEY_END_LON, KEY_SPEEDS};
+				KEY_END_TIME, KEY_AVERAGE_SPEED, KEY_START_LAT, KEY_START_LON, KEY_END_LAT, KEY_END_LON, KEY_SPEEDS, KEY_LOCATIONS};
 		Cursor cursor = sqLiteDatabase.query(MYDATABASE_TABLE, columns, 
 				null, null, null, null, KEY_DATE);
 

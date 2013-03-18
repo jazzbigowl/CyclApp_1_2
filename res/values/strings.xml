@@ -11,7 +11,7 @@
 
     <!-- About Screen -->
     <string name="about_text">CyclApp is an Android application created to aid cyclists. It has been developed as a third year project by a student from the University of Sussex\'s Informatics Undergraduate department.</string>
-    <string name="title_activity_about">About</string>
+    <string name="title_activity_about">About CyclApp</string>
 
     <!-- Navigation Screen -->
     <string name="title_activity_navigation">Navigation</string>
@@ -35,7 +35,7 @@
     <string name="title_activity_home">CycleApp</string>
     <string name="big_home_title">Home</string>
     <string name="home_title">Welcome</string>
-    <string name="sat_nav_button_label">Satellite Navigation</string>
+    <string name="sat_nav_button_label">Navigation</string>
     <string name="view_past_rides_button_label">History</string>
     <string name="about_button_label">About</string>
     <string name="exit_button_label">Exit</string>
@@ -61,6 +61,7 @@
     <string name="trip_speed_title">Average Speed</string>
     <string name="trip_time_title">Duration</string>
     <string name="trip_speeds_title">Speeds</string>
+    <string name="view_trip_button_label">Route</string>
 
     <!-- Map Screen -->
     <string name="title_activity_map">Map</string>
@@ -71,5 +72,6 @@
 
     <!-- Preferences Screen -->
     <string name="title_activity_preferences">Preferences</string>
+    <string name="title_activity_route_map">RouteMap</string>
 
 </resources>

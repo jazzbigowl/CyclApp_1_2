@@ -15,7 +15,7 @@ public class SQLiteAdapterWriter extends SQLiteAdapter {
 		return this; 
 	}
 	
-	public long insert(String name, String time, String startLat, String startLon, String endLat, String endLon, String aveSpeed, String startTime, String endTime, String distance, String date, String speeds){
+	public long insert(String name, String time, String startLat, String startLon, String endLat, String endLon, String aveSpeed, String startTime, String endTime, String distance, String date, String speeds, String locations){
 
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(KEY_NAME, name);
@@ -30,6 +30,7 @@ public class SQLiteAdapterWriter extends SQLiteAdapter {
 		contentValues.put(KEY_END_LON, endLon);
 		contentValues.put(KEY_AVERAGE_SPEED, aveSpeed);
 		contentValues.put(KEY_SPEEDS, speeds);
+		contentValues.put(KEY_LOCATIONS, locations);
 		return sqLiteDatabase.insert(MYDATABASE_TABLE, null, contentValues);
 	}
 	
