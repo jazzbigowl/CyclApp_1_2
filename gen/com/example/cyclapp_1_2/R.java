@@ -25,32 +25,32 @@ public final class R {
         public static final int MapTimeText=0x7f090009;
         public static final int about_button=0x7f090006;
         public static final int about_content=0x7f090000;
-        public static final int address_button=0x7f090020;
+        public static final int address_button=0x7f090021;
         public static final int contentlist=0x7f090001;
-        public static final int delete_all=0x7f090028;
-        public static final int exit=0x7f090029;
+        public static final int delete_all=0x7f090029;
+        public static final int exit=0x7f09002a;
         public static final int exit_button=0x7f090007;
         public static final int frame=0x7f09000a;
         public static final int home_title=0x7f090002;
         public static final int map=0x7f09000b;
         public static final int map_button=0x7f090012;
-        public static final int menu_settings=0x7f090025;
+        public static final int menu_settings=0x7f090026;
         public static final int myDistanceText=0x7f09000d;
         public static final int myLocationText=0x7f09000e;
         public static final int myLocationTitleText=0x7f090017;
         public static final int mySpeedText=0x7f09000c;
-        public static final int pause_button=0x7f090023;
+        public static final int pause_button=0x7f090024;
         public static final int pause_resume_button=0x7f090011;
-        public static final int resume_button=0x7f090024;
+        public static final int resume_button=0x7f090025;
         public static final int routeMap=0x7f090013;
         public static final int sat_nav_button=0x7f090004;
-        public static final int sort_date=0x7f090027;
-        public static final int sort_name=0x7f090026;
+        public static final int sort_date=0x7f090028;
+        public static final int sort_name=0x7f090027;
         public static final int speedText1=0x7f090016;
-        public static final int speedsContentList=0x7f09001f;
-        public static final int start_button=0x7f090021;
+        public static final int speedsContentList=0x7f090020;
+        public static final int start_button=0x7f090022;
         public static final int start_stop_button=0x7f090010;
-        public static final int stop_button=0x7f090022;
+        public static final int stop_button=0x7f090023;
         public static final int test_button=0x7f090003;
         public static final int text1=0x7f090014;
         public static final int text2=0x7f090015;
@@ -59,9 +59,10 @@ public final class R {
         public static final int trip_distance=0x7f09001a;
         public static final int trip_name=0x7f090018;
         public static final int trip_speed=0x7f09001b;
-        public static final int trip_speeds_title=0x7f09001e;
+        public static final int trip_speeds_title=0x7f09001f;
         public static final int trip_time=0x7f09001c;
         public static final int view_past_rides_button=0x7f090005;
+        public static final int view_speeds_button=0x7f09001e;
         public static final int view_trip_button=0x7f09001d;
     }
     public static final class layout {
@@ -101,10 +102,10 @@ public final class R {
         public static final int location_label=0x7f06000a;
         public static final int map_button_label=0x7f06000f;
         public static final int map_name=0x7f060004;
-        public static final int map_speed_label=0x7f060034;
-        public static final int map_speed_text=0x7f060035;
-        public static final int map_timer_label=0x7f060036;
-        public static final int map_timer_text=0x7f060037;
+        public static final int map_speed_label=0x7f060035;
+        public static final int map_speed_text=0x7f060036;
+        public static final int map_timer_label=0x7f060037;
+        public static final int map_timer_text=0x7f060038;
         public static final int menu_delete_all=0x7f060024;
         public static final int menu_exit=0x7f060002;
         public static final int menu_settings=0x7f060001;
@@ -137,14 +138,14 @@ public final class R {
         public static final int title_activity_main=0x7f060003;
         /**  Map Screen 
          */
-        public static final int title_activity_map=0x7f060033;
+        public static final int title_activity_map=0x7f060034;
         /**  Navigation Screen 
          */
         public static final int title_activity_navigation=0x7f060009;
         /**  Preferences Screen 
          */
-        public static final int title_activity_preferences=0x7f060038;
-        public static final int title_activity_route_map=0x7f060039;
+        public static final int title_activity_preferences=0x7f060039;
+        public static final int title_activity_route_map=0x7f06003a;
         public static final int title_activity_test=0x7f060027;
         public static final int trip_date=0x7f060029;
         public static final int trip_distance=0x7f06002a;
@@ -157,6 +158,7 @@ public final class R {
         public static final int trip_time=0x7f06002c;
         public static final int trip_time_title=0x7f060030;
         public static final int view_past_rides_button_label=0x7f06001d;
+        public static final int view_speeds_button_label=0x7f060033;
         public static final int view_trip_button_label=0x7f060032;
     }
     public static final class style {

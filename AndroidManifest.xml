@@ -70,6 +70,7 @@
             android:name="com.example.cyclapp_1_2.RouteMap"
             android:label="@string/title_activity_route_map" >
         </activity>
+        <activity android:name="org.achartengine.GraphicalActivity" />
     </application>
 
 </manifest>

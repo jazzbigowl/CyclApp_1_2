@@ -45,6 +45,8 @@ public class TripDisplay extends Activity implements OnClickListener {
 
 		View viewRouteButton = findViewById(R.id.view_trip_button);
 		viewRouteButton.setOnClickListener(TripDisplay.this);
+		View viewSpeedsButton = findViewById(R.id.view_speeds_button);
+		viewSpeedsButton.setOnClickListener(TripDisplay.this);
 
 
 		final int item_id = cursor.getInt(cursor.getColumnIndex(SQLiteAdapter.KEY_ID));
@@ -132,6 +134,11 @@ public class TripDisplay extends Activity implements OnClickListener {
 			routeMap.putExtra("key", key);
 			routeMap.putExtra("locations", locations);
 			startActivity(routeMap);
+			break;
+		case R.id.view_speeds_button:
+			LineGraph line = new LineGraph(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_SPEEDS)));
+			Intent lineIntent = line.getIntent(this);
+			startActivity(lineIntent);
 			break;
 		}
 	}

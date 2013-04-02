@@ -62,6 +62,8 @@
     <string name="trip_time_title">Duration</string>
     <string name="trip_speeds_title">Speeds</string>
     <string name="view_trip_button_label">Route</string>
+    <string name="view_speeds_button_label">Speeds</string>
+    
 
     <!-- Map Screen -->
     <string name="title_activity_map">Map</string>
