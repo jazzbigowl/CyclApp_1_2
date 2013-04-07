@@ -169,7 +169,7 @@ public class Navigation extends Activity  implements OnClickListener {
 		LayoutParams dialogTxt_idLayoutParams
 		= new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		dialogTxt_id.setLayoutParams(dialogTxt_idLayoutParams);
-		dialogTxt_id.setText(String.valueOf("If you exit this screen, you will lose your trip details done so far." +
+		dialogTxt_id.setText(String.valueOf("Unsaved trips will be lost." +
 				"\nAre you sure you want to quit?"));
 
 
@@ -233,6 +233,7 @@ public class Navigation extends Activity  implements OnClickListener {
 			public void onClick(DialogInterface arg0, int arg1) {
 				tripName = dialogName_id.getText().toString();
 				addToDB();
+				Navigation.this.finish();
 			}
 		});
 
@@ -251,6 +252,17 @@ public class Navigation extends Activity  implements OnClickListener {
 
 			// work out average speed
 			double ave = 0; 
+			double tmpSpeed = 0;
+			ArrayList<Double> tmpSpeeds = new ArrayList<Double>();
+			for (Double s : Speeds) {
+				if (tmpSpeed != 0) {
+					if (s < tmpSpeed * 20) {
+						tmpSpeeds.add(s);
+					}	
+				}
+				tmpSpeed = s;
+			}
+			Speeds = tmpSpeeds;
 			for (Double s : Speeds) {
 				ave += s;
 			}
@@ -293,7 +305,7 @@ public class Navigation extends Activity  implements OnClickListener {
 		speedsAsString += "$";
 		return speedsAsString;
 	}
-	
+
 	private String locationsToString() {
 		String locationsAsString = "";
 		for (Location l: Locations) {

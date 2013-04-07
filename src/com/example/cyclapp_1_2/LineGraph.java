@@ -74,6 +74,7 @@ public class LineGraph {
 		mRenderer.setLabelsColor(Color.BLACK);
 		mRenderer.setXLabelsColor(Color.BLACK);
 		mRenderer.setYLabelsColor(0, Color.BLACK);
+		mRenderer.setZoomButtonsVisible(true);
 
 		Intent intent = ChartFactory.getLineChartIntent(context, dataset, mRenderer, "Speed/Time");
 		return intent;

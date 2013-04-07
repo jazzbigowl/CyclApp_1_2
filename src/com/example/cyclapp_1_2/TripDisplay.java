@@ -69,11 +69,6 @@ public class TripDisplay extends Activity implements OnClickListener {
 			bitch += s + ", ";
 		}
 
-		//		String penis = "id: " + item_id + "\nname: " + item_name + "\ndate: " + item_date + "\ndistance: " + item_distance 
-		//				+ "\nspeed: " + item_speed + "\nstart time:"  + item_start + "\nend time: " + item_end 
-		//				+ "\ntime: " + item_time + "\nstart lat: " + item_startLat + "\nstart lon: " + item_startLon 
-		//				+ "\nend lat: " + item_endLat + "\nend lon: " + item_endLon + "\n"  + "\nall speeds array: " + bitch;
-		//		myHelloText.setText(penis);
 
 		TextView tripName;
 		TextView tripDate;
@@ -90,12 +85,6 @@ public class TripDisplay extends Activity implements OnClickListener {
 		tripName.setText(item_name);
 		tripDate.setText(item_date);
 		
-//		locations = "";
-//		for (String s: item_locations) {
-//			locations += s + " ";
-//		}
-//		tripLocations.setText(locations);
-//		tripLocations.setText(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_LOCATIONS)));
 		
 
 		if (getDistanceMeasurement().equals("mi")) {

@@ -51,7 +51,7 @@ public class RouteMap extends MapActivity {
 		Bundle extras = getIntent().getExtras();
 
 		key = extras.getInt("key");
-	//	stringLocations = extras.getString("locations");
+		//	stringLocations = extras.getString("locations");
 		mySQLiteAdapterReader = new SQLiteAdapterReader(this);
 		mySQLiteAdapterReader.openToRead();
 
@@ -65,7 +65,10 @@ public class RouteMap extends MapActivity {
 		stringLocations = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_LOCATIONS));
 		locationsArray = splitLocations(stringLocations);
 
-		initMapView();
+		mapView = (MapView) findViewById(R.id.routeMap);
+		controller = mapView.getController();
+		mapView.setSatellite(false);
+		mapView.setBuiltInZoomControls(true);
 
 		List<Overlay> mapOverlays = mapView.getOverlays();
 		Drawable drawable = this.getResources().getDrawable(R.drawable.start);
@@ -81,35 +84,31 @@ public class RouteMap extends MapActivity {
 		itemizedoverlay.addOverlay(overlayitem2);
 		mapOverlays.add(itemizedoverlay);
 
-		
-		
+
+
 		mapOverlays = mapView.getOverlays();        
 		projection = mapView.getProjection();
-		mapOverlays.add(new MyOverlay(locationsArray)); 
-//		mapOverlays.add(new MyOverlay(locationsArray.get(1), locationsArray.get(2)));
+		mapOverlays.add(new MyOverlay(locationsArray)); 	
 
-		//Route Stuff
-//		for (int i = 0; i < locationsArray.size() -2; i++) {
-//			mapOverlays = mapView.getOverlays();        
-//			projection = mapView.getProjection();
-//			mapOverlays.add(new MyOverlay(locationsArray.get(i), locationsArray.get(i + 1))); 
-			
-//		}
+
+
+		Integer newStartLat = (int) (startLat * 1E6);
+		Integer newEndLat = (int) (endLat * 1E6);
+		Integer newStartLon = (int) (startLon * 1E6);
+		Integer newEndLon = (int) (endLon * 1E6);
+
+		controller.zoomToSpan(Math.abs(newStartLat - newEndLat), Math.abs(newStartLon - newEndLon));
+		controller.animateTo(new GeoPoint(((int)((startLat + endLat) * 1E6))/2, ((int)((startLon + endLon) * 1E6))/2 )); 
 	}
 
 
-	private void initMapView() {
-		mapView = (MapView) findViewById(R.id.routeMap);
-		controller = mapView.getController();
-		mapView.setSatellite(false);
-		mapView.setBuiltInZoomControls(true);
 
-	}
+
 
 	public ArrayList<Location> splitLocations(String source) {
 		ArrayList<Location> locs = new ArrayList<Location>();
 		Pattern p = Pattern.compile("\\b([0-9]+\\.[0-9]+)|(-[0-9]+\\.[0-9]+)\\b");
-//		Pattern p = Pattern.compile("\\b(.+)\\,\\b");
+		//		Pattern p = Pattern.compile("\\b(.+)\\,\\b");
 		Matcher m = p.matcher(source);
 		List<String> result = new ArrayList<String>();
 		while (m.find()) {
@@ -149,26 +148,26 @@ public class RouteMap extends MapActivity {
 			mPaint.setStrokeCap(Paint.Cap.ROUND);
 			mPaint.setStrokeWidth(2);
 
-//			GeoPoint gP1 = new GeoPoint((int) (from.getLatitude()* 1e6), (int) (from.getLongitude()* 1e6));
-//			GeoPoint gP2 = new GeoPoint((int) (to.getLatitude()* 1e6), (int) (to.getLongitude()* 1e6));
+			//			GeoPoint gP1 = new GeoPoint((int) (from.getLatitude()* 1e6), (int) (from.getLongitude()* 1e6));
+			//			GeoPoint gP2 = new GeoPoint((int) (to.getLatitude()* 1e6), (int) (to.getLongitude()* 1e6));
 
-			
-//			GeoPoint gP1 = new GeoPoint((int) (theseLocations.get(0).getLatitude()* 1e6), (int) (theseLocations.get(0).getLongitude()* 1e6));
-//			GeoPoint gP2 = new GeoPoint((int) (theseLocations.get(theseLocations.size() - 1).getLatitude()* 1e6), (int) (theseLocations.get(theseLocations.size() - 1).getLongitude()* 1e6));
-//			
-//			Point p1 = new Point();
-//			Point p2 = new Point();
-//			Path path = new Path();
-//
-//			projection.toPixels(gP1, p1);
-//			projection.toPixels(gP2, p2);
-//
-//			path.moveTo(p2.x, p2.y);
-//			path.lineTo(p1.x,p1.y);
-//
-//			canvas.drawPath(path, mPaint);
-			
-			
+
+			//			GeoPoint gP1 = new GeoPoint((int) (theseLocations.get(0).getLatitude()* 1e6), (int) (theseLocations.get(0).getLongitude()* 1e6));
+			//			GeoPoint gP2 = new GeoPoint((int) (theseLocations.get(theseLocations.size() - 1).getLatitude()* 1e6), (int) (theseLocations.get(theseLocations.size() - 1).getLongitude()* 1e6));
+			//			
+			//			Point p1 = new Point();
+			//			Point p2 = new Point();
+			//			Path path = new Path();
+			//
+			//			projection.toPixels(gP1, p1);
+			//			projection.toPixels(gP2, p2);
+			//
+			//			path.moveTo(p2.x, p2.y);
+			//			path.lineTo(p1.x,p1.y);
+			//
+			//			canvas.drawPath(path, mPaint);
+
+
 			for (int i = 0; i < theseLocations.size() - 1; i++) {
 				GeoPoint gP1 = new GeoPoint((int) (theseLocations.get(i).getLatitude()* 1e6), (int) (theseLocations.get(i).getLongitude()* 1e6));
 				GeoPoint gP2 = new GeoPoint((int) (theseLocations.get(i + 1).getLatitude()* 1e6), (int) (theseLocations.get(i + 1).getLongitude()* 1e6));
@@ -179,9 +178,9 @@ public class RouteMap extends MapActivity {
 				projection.toPixels(gP2, p2);
 				path.moveTo(p2.x, p2.y);
 				path.lineTo(p1.x,p1.y);
-	
+
 				canvas.drawPath(path, mPaint);
-			
+
 			}
 		}
 
