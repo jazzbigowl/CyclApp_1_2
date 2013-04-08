@@ -1,6 +1,5 @@
 package com.example.cyclapp_1_2;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -13,43 +12,46 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.location.Location;
-import android.os.Bundle;
 
 public class LineGraph {
-	String speedsString;
+	String speedsString, timesString, measurement;
 	ArrayList<Integer> speeds;
+	ArrayList<String> times;
 	Cursor cursor;
-	ArrayList<String> tmp;
+	ArrayList<String> tmpSpeeds, tmpTimes;
 
 
 
-	public LineGraph(String spds) {
+	public LineGraph(String spds, String tms, String msr) {
+		measurement = msr;
 		speedsString = spds;
-		tmp = (ArrayList<String>) splitSpeeds(spds);
+		timesString = tms;
+		tmpSpeeds = (ArrayList<String>) splitSpeeds(spds);
+		times = (ArrayList<String>) splitTimes(tms);
 		speeds = new ArrayList<Integer>();
-		for (int i = 0 ; i < tmp.size(); i++) {
-			speeds.add((int) Double.parseDouble((tmp.get(i))));
+		if (measurement.equals("kph")) {
+			for (int i = 0 ; i < tmpSpeeds.size(); i++) {
+				speeds.add((int) (Double.parseDouble((tmpSpeeds.get(i)))* 1.60934));
+			}
+		} else {
+			for (int i = 0 ; i < tmpSpeeds.size(); i++) {
+				speeds.add((int) Double.parseDouble((tmpSpeeds.get(i))));
+			}
 		}
 		//speeds = tmp.toArray();
 	}
 
 	public Intent getIntent(Context context) {
 
-
-		int[] x = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-		int[] y = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-
 		TimeSeries series = new TimeSeries("Speeds");
-//		for (int i = 0; i < speeds.length; i++) {
-//			series.add(speeds[i], i);
-//		}
-		
+		//		for (int i = 0; i < speeds.length; i++) {
+		//			series.add(speeds[i], i);
+		//		}
+
 		for (int i = 0; i < speeds.size(); i++) {
 			series.add(i, speeds.get(i));
 		}
@@ -63,6 +65,7 @@ public class LineGraph {
 		renderer.setPointStyle(PointStyle.CIRCLE);
 		renderer.setFillPoints(true);
 
+
 		XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
 		mRenderer.addSeriesRenderer(renderer);
 		mRenderer.setApplyBackgroundColor(true);
@@ -70,11 +73,30 @@ public class LineGraph {
 		mRenderer.setMarginsColor(Color.WHITE);
 		mRenderer.setAxesColor(Color.BLACK);
 		mRenderer.setXTitle("Time");
-		mRenderer.setYTitle("Speed");
+		mRenderer.setYTitle("Speed (" + measurement + ")");
 		mRenderer.setLabelsColor(Color.BLACK);
 		mRenderer.setXLabelsColor(Color.BLACK);
 		mRenderer.setYLabelsColor(0, Color.BLACK);
 		mRenderer.setZoomButtonsVisible(true);
+
+		//		int xLabels = mRenderer.getXLabels();
+		mRenderer.setXLabels(0); 
+		//		mRenderer.setXLabelsAngle(40);
+
+		//		ArrayList<Integer> list = new ArrayList<Integer>();
+		//		for (int i = 1; i < xLabels; i++) {
+		//			list.add(times.size()/i);
+		//		}
+		//		for (Integer i: list) {
+		//			mRenderer.addXTextLabel(i, times.get(i));
+		//		}
+
+		//		for (int i = 0; i < times.size(); i++) {
+		//			mRenderer.addXTextLabel(i, times.get(i));
+		//		}
+		mRenderer.addXTextLabel(0, times.get(0));
+		mRenderer.addXTextLabel(((times.size()- 1)/2), times.get((times.size()-1)/2));
+		mRenderer.addXTextLabel((times.size()- 1), times.get(times.size()- 1));
 
 		Intent intent = ChartFactory.getLineChartIntent(context, dataset, mRenderer, "Speed/Time");
 		return intent;
@@ -90,5 +112,17 @@ public class LineGraph {
 		}
 		return result;
 	}
+
+	public static List<String> splitTimes(String source) {
+		Pattern p = Pattern.compile("\\b(\\d\\d\\:\\d\\d\\:\\d\\d)\\b");
+		Matcher m = p.matcher(source);
+		List<String> result = new ArrayList<String>();
+		while (m.find()) {
+			result.add(m.group());
+		}
+		return result;
+	}
+
+
 
 }

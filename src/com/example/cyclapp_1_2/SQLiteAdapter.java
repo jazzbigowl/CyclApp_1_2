@@ -13,6 +13,7 @@ public class SQLiteAdapter {
 	public static final String KEY_ID = "_id";
 	public static final String KEY_NAME = "TheName";
 	public static final String KEY_DATE = "TheDate";
+	public static final String KEY_TIME = "TheTime";
 	public static final String KEY_TRIP_TIME = "TheTimeoftheTrip";
 	public static final String KEY_TRIP_DISTANCE = "TheDistanceoftheTrip";
 	public static final String KEY_START_TIME = "TheTimeattheStart";
@@ -24,6 +25,7 @@ public class SQLiteAdapter {
 	public static final String KEY_END_LON = "EndLongitude";
 	public static final String KEY_SPEEDS = "AllSpeeds";
 	public static final String KEY_LOCATIONS = "AllLocations";
+	public static final String KEY_TIMES = "AllTimes";
 
 	//create table MY_DATABASE (ID integer primary key, Content text not null);
 	private static final String SCRIPT_CREATE_DATABASE =
@@ -31,6 +33,7 @@ public class SQLiteAdapter {
 					+ KEY_ID + " integer primary key autoincrement, "
 					+ KEY_NAME + " text not null, "
 					+ KEY_DATE + " text not null, "
+					+ KEY_TIME + " text not null, "
 					+ KEY_TRIP_TIME + " text not null, "
 					+ KEY_TRIP_DISTANCE + " text not null, "
 					+ KEY_START_TIME + " text not null, "
@@ -41,6 +44,7 @@ public class SQLiteAdapter {
 					+ KEY_END_LON + " text not null, "
 					+ KEY_SPEEDS + " text not null, "
 					+ KEY_LOCATIONS + " text not null, "
+					+ KEY_TIMES + " text not null, "
 					+ KEY_AVERAGE_SPEED + " text not null);";
 
 	public SQLiteHelper sqLiteHelper;

@@ -10,12 +10,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,30 +33,35 @@ public class Home extends Activity implements OnClickListener {
 		String namePref = prefs.getString("name", "");
 		if (namePref != "") {
 			TextView welcomeBanner;
-			welcomeBanner = (TextView)findViewById(R.id.home_title);
-			welcomeBanner.setText("Welcome " + namePref);
+//			welcomeBanner = (TextView)findViewById(R.id.home_title);
+//			welcomeBanner.setText("Welcome " + namePref);
 		}
 
 		// Listeners for Buttons
 		View satNat = findViewById(R.id.sat_nav_button);
+		satNat.getBackground().setColorFilter(new LightingColorFilter(Color.GRAY, Color.GRAY));
 		satNat.setOnClickListener(Home.this);
 		View pastRides = findViewById(R.id.view_past_rides_button);
+		pastRides.getBackground().setColorFilter(new LightingColorFilter(Color.DKGRAY, Color.GRAY));
 		pastRides.setOnClickListener(Home.this);
 		View about = findViewById(R.id.about_button);
+		about.getBackground().setColorFilter(new LightingColorFilter(Color.GRAY, Color.DKGRAY));
 		about.setOnClickListener(Home.this);
 		View exit = findViewById(R.id.exit_button);
+		exit.getBackground().setColorFilter(new LightingColorFilter(Color.DKGRAY, Color.DKGRAY));
 		exit.setOnClickListener(Home.this);
-		View test = findViewById(R.id.test_button);
-		test.setOnClickListener(Home.this);
+//		View test = findViewById(R.id.test_button);
+//		test.setOnClickListener(Home.this);
 
 	}
+	
 
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.test_button:
-			Intent t = new Intent(this, Test.class);
-			startActivity(t);
-			break;
+//		case R.id.test_button:
+//			Intent t = new Intent(this, Test.class);
+//			startActivity(t);
+//			break;
 		case R.id.sat_nav_button:
 			LocationManager alm = (LocationManager)this.getSystemService( Context.LOCATION_SERVICE );
 			if( alm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER ) ) {

@@ -9,7 +9,6 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
@@ -23,14 +22,11 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.WindowManager;
-import android.widget.TextView;
 
 public class RouteMap extends MapActivity {
 	private MapView mapView;
 	private MapController controller;
-	private PositionOverlay myPositionOverlay;
+//	private PositionOverlay myPositionOverlay;
 
 	double startLat, startLon, endLat, endLon;
 	int key;
@@ -40,7 +36,7 @@ public class RouteMap extends MapActivity {
 	Cursor cursor;
 
 	//Route stuff
-	private List<Overlay> mapOverlays;
+//	private List<Overlay> mapOverlays;
 	private Projection projection; 
 
 

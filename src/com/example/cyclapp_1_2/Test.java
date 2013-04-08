@@ -236,7 +236,7 @@ public class Test extends MapActivity  implements OnClickListener {
 			String data_distance = Double.toString(tripDistance);
 			String data_date = new Date().toString();
 			String data_speeds = speedsToString();
-			mySQLiteAdapterWriter.insert(data_name, data_time, data_start_lat, data_start_lon, data_end_lat, data_end_lon, data_ave_speed, data_start_time, data_end_time, data_distance, data_date, data_speeds, "just delete this activity you lazy guy");
+			mySQLiteAdapterWriter.insert(data_name, data_time, data_start_lat, data_start_lon, data_end_lat, data_end_lon, data_ave_speed, data_start_time, data_end_time, data_distance, data_date, data_date, data_speeds, "just delete this activity you lazy guy", "just delete this activity you lazy guy");
 			Toast.makeText(
 					Test.this,
 					"Item added to database.",

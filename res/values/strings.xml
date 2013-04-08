@@ -15,12 +15,6 @@
 
     <!-- Navigation Screen -->
     <string name="title_activity_navigation">Navigation</string>
-    <string name="location_label">not found &#8230;</string>
-    <string name="timer_title">Trip Time</string>
-    <string name="timer_label">Press start!</string>
-    <string name="average_speed_title">Average speed:</string>
-    <string name="average_speed_label">Press start!</string>
-    <string name="map_button_label">View Map</string>
     <string name="mySpeedTitleText">Speed</string>
     <string name="myLocationTitleText">Position</string>
     <string name="myDistanceTitleText">Distance</string>
@@ -28,12 +22,14 @@
     <string name="mySpeedText">0</string>
     <string name="myDistanceText">0</string>
     <string name="myLocationText">No Location</string>
+    <string name="myTimerText">Press start!</string>
     <string name="start_stop_button_label">START</string>
     <string name="pause_resume_button_label">PAUSE</string>
+    <string name="map_button_label">View Map</string>
 
     <!-- Home Screen -->
     <string name="title_activity_home">CycleApp</string>
-    <string name="big_home_title">Home</string>
+    <string name="big_home_title">HOME</string>
     <string name="home_title">Welcome</string>
     <string name="sat_nav_button_label">Navigation</string>
     <string name="view_past_rides_button_label">History</string>
@@ -63,7 +59,6 @@
     <string name="trip_speeds_title">Speeds</string>
     <string name="view_trip_button_label">Route</string>
     <string name="view_speeds_button_label">Speeds</string>
-    
 
     <!-- Map Screen -->
     <string name="title_activity_map">Map</string>

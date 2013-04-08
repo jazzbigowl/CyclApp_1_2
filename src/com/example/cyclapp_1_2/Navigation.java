@@ -1,8 +1,11 @@
 package com.example.cyclapp_1_2;
 
 import java.math.BigDecimal;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,7 +20,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +42,8 @@ public class Navigation extends Activity  implements OnClickListener {
 	SimpleCursorAdapter cursorAdapter;
 	Cursor cursor;
 
+	Format formatter;
+
 	int time = 0;
 	int hours = 0;
 	int minutes = 0;
@@ -48,6 +52,7 @@ public class Navigation extends Activity  implements OnClickListener {
 	double curLocationTime = 0, oldLocationTime = 0, startLocationTime = 0, endLocationTime = 0; // in milliseconds
 	ArrayList<Location> Locations = new ArrayList<Location>();
 	ArrayList<Double> Speeds = new ArrayList<Double>();
+	ArrayList<String> Times = new ArrayList<String>();
 	String tripName = null;
 	protected Handler taskHandler = new Handler();
 	protected Boolean isRunning = false; 
@@ -242,6 +247,7 @@ public class Navigation extends Activity  implements OnClickListener {
 
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	private void addToDB() {
 		if (Speeds.size() != 0) {
 			// Work out name
@@ -254,15 +260,18 @@ public class Navigation extends Activity  implements OnClickListener {
 			double ave = 0; 
 			double tmpSpeed = 0;
 			ArrayList<Double> tmpSpeeds = new ArrayList<Double>();
+			ArrayList<String> tmpTimes = new ArrayList<String>();
 			for (Double s : Speeds) {
 				if (tmpSpeed != 0) {
 					if (s < tmpSpeed * 20) {
 						tmpSpeeds.add(s);
+						tmpTimes.add(Times.get(Speeds.indexOf(s)));
 					}	
 				}
 				tmpSpeed = s;
 			}
 			Speeds = tmpSpeeds;
+			Times = tmpTimes;
 			for (Double s : Speeds) {
 				ave += s;
 			}
@@ -271,7 +280,7 @@ public class Navigation extends Activity  implements OnClickListener {
 			// work out trip distance
 			double tripDistance = calculateDistance(Locations.get(0).getLatitude(), Locations.get(0).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude());
 
-			String data_time = Integer.toString(time);
+			String data_trip_time = Integer.toString(time);
 			String data_start_lat = Double.toString(startLocation.getLatitude());
 			String data_start_lon = Double.toString(startLocation.getLongitude());
 			String data_end_lat = Double.toString(endLocation.getLatitude());
@@ -280,10 +289,14 @@ public class Navigation extends Activity  implements OnClickListener {
 			String data_start_time = Double.toString(startLocationTime);
 			String data_end_time = Double.toString(endLocationTime);
 			String data_distance = Double.toString(tripDistance);
-			String data_date = new Date().toString();
+			formatter = new SimpleDateFormat("E, dd MMM yyyy");
+			String data_date = formatter.format(new Date());
+			formatter = new SimpleDateFormat("HH:mm:ss");
+			String data_time = formatter.format(new Date());
 			String data_speeds = speedsToString();
 			String data_locations = locationsToString();
-			mySQLiteAdapterWriter.insert(data_name, data_time, data_start_lat, data_start_lon, data_end_lat, data_end_lon, data_ave_speed, data_start_time, data_end_time, data_distance, data_date, data_speeds, data_locations);
+			String data_times = timesToString();
+			mySQLiteAdapterWriter.insert(data_name, data_trip_time, data_start_lat, data_start_lon, data_end_lat, data_end_lon, data_ave_speed, data_start_time, data_end_time, data_distance, data_date, data_time, data_speeds, data_locations, data_times);
 			Toast.makeText(
 					Navigation.this,
 					"Item added to database.",
@@ -315,6 +328,16 @@ public class Navigation extends Activity  implements OnClickListener {
 		locationsAsString += "$";
 		return locationsAsString;
 	}
+	
+	private String timesToString() {
+		String timesAsString = "";
+		for (String t: Times) {
+			timesAsString += t + ",";
+		}
+		timesAsString = timesAsString.substring(0, timesAsString.length() - 1);
+		timesAsString += "$";
+		return timesAsString;
+	}
 
 	@Override
 	protected void onDestroy() {
@@ -322,6 +345,7 @@ public class Navigation extends Activity  implements OnClickListener {
 		mySQLiteAdapterWriter.close();
 	}
 
+	@SuppressLint("SimpleDateFormat")
 	private void updateWithNewLocation(Location location) {
 		TextView mySpeedText;
 		TextView myLocationText;
@@ -348,6 +372,8 @@ public class Navigation extends Activity  implements OnClickListener {
 		double speed = calculateSpeed();
 		if ((isRunning) && (!isPaused)) {
 			Speeds.add(speed);
+			formatter = new SimpleDateFormat("HH:mm:ss");
+			Times.add(formatter.format(new Date()));
 		}
 		if (getSpeedMeasurement().equals("mph")) {
 			mySpeedText.setText(Double.toString(round(speed, 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
@@ -422,7 +448,7 @@ public class Navigation extends Activity  implements OnClickListener {
 			// run my task.
 			time += 1;		
 			TextView t = new TextView(this); 
-			t = (TextView)findViewById(R.id.timer_label); 
+			t = (TextView)findViewById(R.id.myTimerText); 
 			hours = time / 3600;
 			minutes = (time % 3600) / 60;
 			seconds = time % 60;
