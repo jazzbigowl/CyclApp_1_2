@@ -9,5 +9,14 @@
         <item>Miles is selected</item>
         <item>Kilometres is selected</item>
     </string-array>
+    
+    <string-array name="listMapOptions">
+        <item>Terrain</item>
+        <item>Satelite</item>
+    </string-array>
+    <string-array name="listMapValues">
+        <item>Terrain is selected</item>
+        <item>Satelite is selected</item>
+    </string-array>
 
 </resources>

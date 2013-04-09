@@ -8,8 +8,10 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -18,48 +20,48 @@ public class Map extends MapActivity {
 	private MapController controller;
 	private PositionOverlay myPositionOverlay;
 
-	int time = 0;
-	int hours = 0;
-	int minutes = 0;
-	int seconds = 0;
-	protected Handler taskHandler = new Handler();
+//	int time = 0;
+//	int hours = 0;
+//	int minutes = 0;
+//	int seconds = 0;
+//	protected Handler taskHandler = new Handler();
 
-	double curLat, curLon, oldLat, oldLon;
-	double curLocationTime = 0, oldLocationTime = 0;
+//	double curLat, curLon, oldLat, oldLon;
+//	double curLocationTime = 0, oldLocationTime = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
 		Bundle extras = getIntent().getExtras();
-		if ((extras.getBoolean("isRunning")) && !(extras.getBoolean("isPaused"))) {
-			time = extras.getInt("myTimer");
-			setTimer();
-		} else if ((extras.getBoolean("isRunning")) && (extras.getBoolean("isPaused"))) {
-			time = extras.getInt("myTimer");	
-			TextView t = new TextView(this); 
-			t = (TextView)findViewById(R.id.MapTimeText); 
-			hours = time / 3600;
-			minutes = (time % 3600) / 60;
-			seconds = time % 60;
-			String timeString = "";
-			if (hours < 10) {
-				timeString += "0" + hours + ":";
-			} else {
-				timeString += hours + ":";
-			}
-			if (minutes < 10) {
-				timeString += "0" + minutes + ":";
-			} else {
-				timeString += minutes + ":";
-			}
-			if (seconds < 10) {
-				timeString += "0" + seconds;
-			} else {
-				timeString += seconds;
-			}
-			t.setText(timeString);
-		}
+//		if ((extras.getBoolean("isRunning")) && !(extras.getBoolean("isPaused"))) {
+//			time = extras.getInt("myTimer");
+//			setTimer();
+//		} else if ((extras.getBoolean("isRunning")) && (extras.getBoolean("isPaused"))) {
+//			time = extras.getInt("myTimer");	
+//			TextView t = new TextView(this); 
+//			t = (TextView)findViewById(R.id.MapTimeText); 
+//			hours = time / 3600;
+//			minutes = (time % 3600) / 60;
+//			seconds = time % 60;
+//			String timeString = "";
+//			if (hours < 10) {
+//				timeString += "0" + hours + ":";
+//			} else {
+//				timeString += hours + ":";
+//			}
+//			if (minutes < 10) {
+//				timeString += "0" + minutes + ":";
+//			} else {
+//				timeString += minutes + ":";
+//			}
+//			if (seconds < 10) {
+//				timeString += "0" + seconds;
+//			} else {
+//				timeString += seconds;
+//			}
+//			t.setText(timeString);
+//		}
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		initMapView();
 		initMyLocation();
@@ -75,7 +77,13 @@ public class Map extends MapActivity {
 	private void initMapView() {
 		myMap = (MapView) findViewById(R.id.map);
 		controller = myMap.getController();
-		myMap.setSatellite(true);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Map.this);
+		String listPrefs = prefs.getString("listMapPref", "Please select a measurement in settings.");
+		if (listPrefs.equals("Terrain is selected")) {
+			myMap.setSatellite(false);
+		} else if (listPrefs.equals("Satelite is selected")) {
+			myMap.setSatellite(true);
+		}
 		myMap.setBuiltInZoomControls(true);
 
 	}
@@ -114,44 +122,44 @@ public class Map extends MapActivity {
 //		controller.animateTo(point);
 //	}
 
-	private void setTimer() {
-		final long elapse = 1000;
-		Runnable t = new Runnable() {
-			public void run()
-			{
-				runNextTimedTask();
-				taskHandler.postDelayed( this, elapse );
-			}
-		};
-		taskHandler.postDelayed( t, elapse );
-
-	}
+//	private void setTimer() {
+//		final long elapse = 1000;
+//		Runnable t = new Runnable() {
+//			public void run()
+//			{
+//				runNextTimedTask();
+//				taskHandler.postDelayed( this, elapse );
+//			}
+//		};
+//		taskHandler.postDelayed( t, elapse );
+//
+//	}
 
 	private void runNextTimedTask() {
-		// run my task.
-		time += 1;		
-		TextView t = new TextView(this); 
-		t = (TextView)findViewById(R.id.MapTimeText); 
-		hours = time / 3600;
-		minutes = (time % 3600) / 60;
-		seconds = time % 60;
-		String timeString = "";
-		if (hours < 10) {
-			timeString += "0" + hours + ":";
-		} else {
-			timeString += hours + ":";
-		}
-		if (minutes < 10) {
-			timeString += "0" + minutes + ":";
-		} else {
-			timeString += minutes + ":";
-		}
-		if (seconds < 10) {
-			timeString += "0" + seconds;
-		} else {
-			timeString += seconds;
-		}
-		t.setText(timeString);
+//		// run my task.
+//		time += 1;		
+//		TextView t = new TextView(this); 
+//		t = (TextView)findViewById(R.id.MapTimeText); 
+//		hours = time / 3600;
+//		minutes = (time % 3600) / 60;
+//		seconds = time % 60;
+//		String timeString = "";
+//		if (hours < 10) {
+//			timeString += "0" + hours + ":";
+//		} else {
+//			timeString += hours + ":";
+//		}
+//		if (minutes < 10) {
+//			timeString += "0" + minutes + ":";
+//		} else {
+//			timeString += minutes + ":";
+//		}
+//		if (seconds < 10) {
+//			timeString += "0" + seconds;
+//		} else {
+//			timeString += seconds;
+//		}
+//		t.setText(timeString);
 	}
 
 

@@ -13,6 +13,7 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -22,6 +23,7 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 public class RouteMap extends MapActivity {
 	private MapView mapView;
@@ -63,23 +65,31 @@ public class RouteMap extends MapActivity {
 
 		mapView = (MapView) findViewById(R.id.routeMap);
 		controller = mapView.getController();
-		mapView.setSatellite(false);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RouteMap.this);
+		String listPrefs = prefs.getString("listMapPref", "Please select a measurement in settings.");
+		if (listPrefs.equals("Terrain is selected")) {
+			mapView.setSatellite(false);
+		} else if (listPrefs.equals("Satelite is selected")) {
+			mapView.setSatellite(true);
+		}
 		mapView.setBuiltInZoomControls(true);
 
 		List<Overlay> mapOverlays = mapView.getOverlays();
-		Drawable drawable = this.getResources().getDrawable(R.drawable.start);
-		HelloItemizedOverlay itemizedoverlay = new HelloItemizedOverlay(drawable, this);
+		Drawable drawableStart = this.getResources().getDrawable(R.drawable.start);
+		Drawable drawableEnd = this.getResources().getDrawable(R.drawable.end);
+		HelloItemizedOverlay itemizedoverlayStart = new HelloItemizedOverlay(drawableStart, this);
+		HelloItemizedOverlay itemizedoverlayEnd = new HelloItemizedOverlay(drawableEnd, this);
 
-		GeoPoint point = new GeoPoint((int)(startLat* 1e6),(int)(startLon* 1e6));
-		OverlayItem overlayitem = new OverlayItem(point, "Start", Double.toString(startLat) + " " + Double.toString(startLon));
+		GeoPoint pointStart = new GeoPoint((int)(startLat* 1e6),(int)(startLon* 1e6));
+		OverlayItem overlayitem = new OverlayItem(pointStart, "Start", Double.toString(startLat) + " " + Double.toString(startLon));
 
-		GeoPoint point2 = new GeoPoint((int)(endLat* 1e6),(int)(endLon* 1e6));
-		OverlayItem overlayitem2 = new OverlayItem(point2, "End", Double.toString(endLat) + " " + Double.toString(endLon));
+		GeoPoint pointEnd = new GeoPoint((int)(endLat* 1e6),(int)(endLon* 1e6));
+		OverlayItem overlayitem2 = new OverlayItem(pointEnd, "End", Double.toString(endLat) + " " + Double.toString(endLon));
 
-		itemizedoverlay.addOverlay(overlayitem);
-		itemizedoverlay.addOverlay(overlayitem2);
-		mapOverlays.add(itemizedoverlay);
-
+		itemizedoverlayStart.addOverlay(overlayitem);
+		itemizedoverlayEnd.addOverlay(overlayitem2);
+		mapOverlays.add(itemizedoverlayStart);
+		mapOverlays.add(itemizedoverlayEnd);
 
 
 		mapOverlays = mapView.getOverlays();        

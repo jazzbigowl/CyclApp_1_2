@@ -5,8 +5,15 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.google.android.maps.Overlay;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,7 +40,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Navigation extends Activity  implements OnClickListener {
+public class Navigation extends MapActivity  implements OnClickListener {
 
 	Button buttonSortDefault, buttonSort1;
 
@@ -57,6 +64,11 @@ public class Navigation extends Activity  implements OnClickListener {
 	protected Handler taskHandler = new Handler();
 	protected Boolean isRunning = false; 
 	protected Boolean isPaused = false;
+	
+	// MAP STUFF
+	private MapView myMap;
+	private MapController controller;
+	private PositionOverlay myPositionOverlay;
 
 
 
@@ -97,8 +109,25 @@ public class Navigation extends Activity  implements OnClickListener {
 		pauseResumeButton.setOnClickListener(Navigation.this);
 		View mapbut = findViewById(R.id.map_button);
 		mapbut.setOnClickListener(Navigation.this);
+		
+		TextView speedMeasurementLabel;
+		speedMeasurementLabel = (TextView)findViewById(R.id.mySpeedMeasurementText);
+		speedMeasurementLabel.setText(getSpeedMeasurement());
+		TextView distanceMeasurementLabel;
+		distanceMeasurementLabel = (TextView)findViewById(R.id.myDistanceMeasurementText);
+		distanceMeasurementLabel.setText(getDistanceMeasurement());
 
 		pauseResumeButton.setEnabled(false);
+		
+		// MAP STUFF
+				initMapView();
+				initMyLocation();
+
+				// Add the MyPositionOverlay
+				myPositionOverlay = new PositionOverlay();
+				List<Overlay> overlays = myMap.getOverlays();
+				overlays.add(myPositionOverlay);
+				myMap.postInvalidate();
 	}
 
 	public void onClick(View v) {
@@ -366,7 +395,7 @@ public class Navigation extends Activity  implements OnClickListener {
 			}
 			double lat = round(location.getLatitude(), 6, BigDecimal.ROUND_HALF_UP);
 			double lng = round(location.getLongitude(), 6, BigDecimal.ROUND_HALF_UP);
-			latLongString = "Lat:" + lat + "\nLong:" + lng;
+			latLongString = "Lat:" + lat + "\nLon:" + lng;
 		}
 
 		double speed = calculateSpeed();
@@ -376,9 +405,9 @@ public class Navigation extends Activity  implements OnClickListener {
 			Times.add(formatter.format(new Date()));
 		}
 		if (getSpeedMeasurement().equals("mph")) {
-			mySpeedText.setText(Double.toString(round(speed, 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
+			mySpeedText.setText(Double.toString(round(speed, 2, BigDecimal.ROUND_HALF_UP)));
 		} else {
-			mySpeedText.setText(Double.toString(round((speed* 1.60934), 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
+			mySpeedText.setText(Double.toString(round((speed* 1.60934), 2, BigDecimal.ROUND_HALF_UP)));
 		}
 
 		myLocationText.setText(latLongString);
@@ -386,12 +415,12 @@ public class Navigation extends Activity  implements OnClickListener {
 			double distance = calculateDistance(Locations.get(0).getLatitude(), Locations.get(0).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude());
 			distance = round(distance, 2, BigDecimal.ROUND_HALF_UP);
 			if (getDistanceMeasurement().equals("mi")) {
-				myDistanceText.setText(Double.toString(distance) + " " + getDistanceMeasurement());
+				myDistanceText.setText(Double.toString(distance));
 			} else {
-				myDistanceText.setText(Double.toString(round((distance* 1.60934), 2, BigDecimal.ROUND_HALF_UP)) + " " + getDistanceMeasurement());
+				myDistanceText.setText(Double.toString(round((distance* 1.60934), 2, BigDecimal.ROUND_HALF_UP)));
 			}
 		} else {
-			myDistanceText.setText("0" + " " +getDistanceMeasurement());
+			myDistanceText.setText("0");
 		}
 	}
 
@@ -583,34 +612,72 @@ public class Navigation extends Activity  implements OnClickListener {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.settings, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.settings, menu);
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean onOptionsItemSelected(MenuItem item) {
+//		switch (item.getItemId()) {
+//		case R.id.menu_settings:
+//			startActivity(new Intent(Navigation.this, Preferences.class));
+//			return true;
+//		case R.id.exit:
+//			new AlertDialog.Builder(this)
+//			.setMessage("Are you sure you want to exit?")
+//			.setCancelable(false)
+//			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//				public void onClick(DialogInterface dialog, int id) {
+//					//CustomTabActivity.this.finish();
+//					Navigation.this.finish();
+//				}
+//			})
+//			.setNegativeButton("No", null)
+//			.show();
+//			//this.finish();
+//			return true;
+//		}
+//		return false;
+//	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_settings:
-			startActivity(new Intent(Navigation.this, Preferences.class));
-			return true;
-		case R.id.exit:
-			new AlertDialog.Builder(this)
-			.setMessage("Are you sure you want to exit?")
-			.setCancelable(false)
-			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					//CustomTabActivity.this.finish();
-					Navigation.this.finish();
-				}
-			})
-			.setNegativeButton("No", null)
-			.show();
-			//this.finish();
-			return true;
+	// MAP STUFF
+		@Override
+		protected boolean isRouteDisplayed() {
+			// Required by MapActivity
+			return false;
 		}
-		return false;
-	}
+
+		// MAP STUFF
+		private void initMapView() {
+			myMap = (MapView) findViewById(R.id.halfMap);
+			controller = myMap.getController();
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Navigation.this);
+			String listPrefs = prefs.getString("listMapPref", "Please select a measurement in settings.");
+			if (listPrefs.equals("Terrain is selected")) {
+				myMap.setSatellite(false);
+			} else if (listPrefs.equals("Satelite is selected")) {
+				myMap.setSatellite(true);
+			}
+			myMap.setBuiltInZoomControls(true);
+
+		}
+
+		// MAP STUFF
+		private void initMyLocation() {
+
+			final MyLocationOverlay overlay = new MyLocationOverlay(this, myMap);
+			overlay.enableMyLocation();
+			// overlay.enableCompass(); // does not work in emulator
+			overlay.runOnFirstFix(new Runnable() {
+				public void run() {
+					// Zoom in to current location
+					controller.setZoom(20);
+					controller.animateTo(overlay.getMyLocation());
+				}
+			});
+			myMap.getOverlays().add(overlay);
+		}
 
 }

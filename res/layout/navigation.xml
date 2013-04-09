@@ -12,22 +12,20 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:layout_marginTop="5dip"
             android:text="@string/mySpeedTitleText"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-                        android:layout_marginTop="5dip"
             android:text="@string/myTimerTitleText"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -36,14 +34,30 @@
         android:layout_marginBottom="10dip"
         android:weightSum="2" >
 
-        <TextView
-            android:id="@+id/mySpeedText"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:textSize="20sp"
-            android:text="@string/mySpeedText" />
+            android:gravity="center_horizontal" >
+
+            <TextView
+                android:id="@+id/mySpeedText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="@string/mySpeedText"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/mySpeedMeasurementText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="@string/mySpeedMeasurementText"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/myTimerText"
@@ -51,7 +65,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="@string/myTimerText" />
+            android:text="@string/myTimerText"
+            android:textSize="35sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,19 +79,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="8dip"
             android:gravity="center_horizontal"
             android:text="@string/myLocationTitleText"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginTop="8dip"
             android:gravity="center_horizontal"
             android:text="@string/myDistanceTitleText"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -90,21 +106,41 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="@string/myLocationText" />
+            android:text="@string/myLocationText"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/myDistanceText"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/myDistanceText" />
+            android:gravity="center_horizontal" >
+
+            <TextView
+                android:id="@+id/myDistanceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="@string/myDistanceText"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/myDistanceMeasurementText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="@string/myDistanceMeasurementText"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:weightSum="2" >
+        android:layout_marginTop="8dip"
+        android:weightSum="3" >
 
         <Button
             android:id="@+id/start_stop_button"
@@ -121,16 +157,28 @@
             android:layout_weight="1"
             android:text="@string/pause_resume_button_label" >
         </Button>
+
+        <Button
+            android:id="@+id/map_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/map_button_label" >
+        </Button>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/map_button"
+    <LinearLayout
+        android:id="@+id/frame"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/map_button_label" >
-    </Button>
-    
-    
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <com.google.android.maps.MapView
+            android:id="@+id/halfMap"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:apiKey="0tklCgRc0knxYC33AIb0LO2NK_itx5-aSqP9Vaw"
+            android:clickable="true" />
+    </LinearLayout>
 
 </LinearLayout>

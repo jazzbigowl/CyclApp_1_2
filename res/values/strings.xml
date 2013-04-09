@@ -22,10 +22,12 @@
     <string name="mySpeedText">0</string>
     <string name="myDistanceText">0</string>
     <string name="myLocationText">No Location</string>
-    <string name="myTimerText">Press start!</string>
+    <string name="myTimerText">Start!</string>
     <string name="start_stop_button_label">START</string>
     <string name="pause_resume_button_label">PAUSE</string>
     <string name="map_button_label">View Map</string>
+    <string name="mySpeedMeasurementText">mph</string>
+    <string name="myDistanceMeasurementText">mi</string>
 
     <!-- Home Screen -->
     <string name="title_activity_home">CycleApp</string>
@@ -42,6 +44,7 @@
     <string name="menu_sort_date">Sort by Date</string>
     <string name="menu_sort_name">Sort by Name</string>
     <string name="menu_delete_all">Delete All</string>
+     <string name="refresh">Refresh</string>
 
     <!-- Trip Display Screen -->
     <string name="title_activity_journey_display">JourneyDisplay</string>
@@ -51,14 +54,17 @@
     <string name="trip_date">not found&#8230;</string>
     <string name="trip_distance">not found&#8230;</string>
     <string name="trip_speed">not found&#8230;</string>
+    <string name="trip_max_speed">not found&#8230;</string>
     <string name="trip_time">not found&#8230;</string>
     <string name="trip_speeds">not found&#8230;</string>
     <string name="trip_distance_title">Distance Travelled</string>
     <string name="trip_speed_title">Average Speed</string>
+     <string name="trip_max_speed_title">Maximum Speed</string>
     <string name="trip_time_title">Duration</string>
     <string name="trip_speeds_title">Speeds</string>
     <string name="view_trip_button_label">Route</string>
     <string name="view_speeds_button_label">Speeds</string>
+    <string name="delete_button_label">Delete</string>
 
     <!-- Map Screen -->
     <string name="title_activity_map">Map</string>

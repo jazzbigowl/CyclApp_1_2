@@ -8,6 +8,10 @@
         android:showAsAction="never"
         android:title="@string/menu_sort_date"/>
     <item
+        android:id="@+id/refresh"
+        android:showAsAction="never"
+        android:title="@string/refresh"/>
+    <item
         android:id="@+id/delete_all"
         android:showAsAction="never"
         android:title="@string/menu_delete_all"/>

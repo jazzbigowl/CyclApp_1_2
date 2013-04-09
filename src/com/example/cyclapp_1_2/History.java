@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 public class History extends Activity {
-	
+
 	private SQLiteAdapterReader mySQLiteAdapterReader;
 	ListView listContent;
 
@@ -48,6 +48,9 @@ public class History extends Activity {
 			cursorAdapter =
 					new SimpleCursorAdapter(History.this, R.layout.row, cursor, from2, to2);
 			listContent.setAdapter(cursorAdapter);
+			updateList();
+			return true;
+		case R.id.refresh:
 			updateList();
 			return true;
 		case R.id.delete_all:

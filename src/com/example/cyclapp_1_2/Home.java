@@ -4,8 +4,10 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,6 +59,7 @@ public class Home extends Activity implements OnClickListener {
 	}
 	
 
+	@SuppressLint("NewApi")
 	public void onClick(View v) {
 		switch (v.getId()) {
 //		case R.id.test_button:
@@ -123,6 +127,32 @@ public class Home extends Activity implements OnClickListener {
 		case R.id.about_button:
 			Intent a = new Intent(this, About.class);
 			startActivity(a);
+			
+			
+			
+			
+//			AlertDialog.Builder myDialog = new AlertDialog.Builder(Home.this, R.style.Theme.Dialog);
+//			//Dialog myDialog = new Dialog(Home.this, R.style.CustomDialogTheme);
+//			myDialog.setTitle("Warning!");
+//			
+//			//myDialog.setContentView(R.layout.fragment_features_dialog);
+//			TextView dialogTxt_id = new TextView(Home.this);
+//			LayoutParams dialogTxt_idLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//			dialogTxt_id.setLayoutParams(dialogTxt_idLayoutParams);
+//			dialogTxt_id.setText(String.valueOf("THIS IS S TEST"));
+//			LinearLayout layout = new LinearLayout(Home.this);
+//			layout.setOrientation(LinearLayout.VERTICAL);
+//			layout.addView(dialogTxt_id);
+//			myDialog.setView(layout);
+////			myDialog.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+////				// do something when the button is clicked
+////				public void onClick(DialogInterface arg0, int arg1) {
+////					Home.this.finish();
+////				}
+////			});
+//			myDialog.show();
+
+			
 			break;
 		case R.id.exit_button:
 			new AlertDialog.Builder(this)

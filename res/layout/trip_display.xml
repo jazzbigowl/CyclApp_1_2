@@ -10,7 +10,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="5dip"
         android:text="@string/trip_name"
-        android:textSize="30sp"
+        android:textSize="35sp"
         android:textStyle="bold" />
 
     <TextView
@@ -20,94 +20,131 @@
         android:layout_gravity="center"
         android:layout_marginBottom="15dip"
         android:text="@string/trip_date"
-        android:textSize="15sp" />
+        android:textSize="20sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="5dip"
-        android:text="@string/trip_distance_title"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/trip_distance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginBottom="15dip"
-        android:layout_marginLeft="5dip"
-        android:text="@string/trip_distance"
-        android:textSize="15sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="5dip"
-        android:text="@string/trip_speed_title"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/trip_speed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginBottom="15dip"
-        android:layout_marginLeft="5dip"
-        android:text="@string/trip_speed"
-        android:textSize="15sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="5dip"
-        android:text="@string/trip_time_title"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/trip_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginBottom="15dip"
-        android:layout_marginLeft="5dip"
-        android:text="@string/trip_time"
-        android:textSize="15sp" />
-
-    <Button
-        android:id="@+id/view_trip_button"
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/view_trip_button_label" >
-    </Button>
+        android:layout_height="fill_parent"
+        android:layout_marginTop="8dip"
+        android:orientation="vertical"
+        android:weightSum="9" >
 
-    <Button
-        android:id="@+id/view_speeds_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/view_speeds_button_label" >
-    </Button>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:text="@string/trip_time_title"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/trip_speeds_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="5dip"
-        android:text="@string/trip_speeds_title"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/trip_time"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_marginBottom="15dip"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:text="@string/trip_time"
+            android:textSize="20sp" />
 
-    <ListView
-        android:id="@+id/speedsContentList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:text="@string/trip_distance_title"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/trip_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_marginBottom="15dip"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:text="@string/trip_distance"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:text="@string/trip_speed_title"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/trip_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_marginBottom="15dip"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:text="@string/trip_speed"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:text="@string/trip_max_speed_title"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/trip_max_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="left"
+            android:layout_marginBottom="15dip"
+            android:layout_marginLeft="5dip"
+            android:layout_weight="1"
+            android:text="@string/trip_max_speed"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"
+            android:weightSum="3" >
+
+            <Button
+                android:id="@+id/view_trip_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/view_trip_button_label" >
+            </Button>
+
+            <Button
+                android:id="@+id/view_speeds_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/view_speeds_button_label" >
+            </Button>
+            <Button
+                android:id="@+id/delete_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/delete_button_label" >
+            </Button>
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

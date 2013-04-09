@@ -46,6 +46,8 @@ public class TripDisplay extends Activity implements OnClickListener {
 		viewRouteButton.setOnClickListener(TripDisplay.this);
 		View viewSpeedsButton = findViewById(R.id.view_speeds_button);
 		viewSpeedsButton.setOnClickListener(TripDisplay.this);
+		View deleteButton = findViewById(R.id.delete_button);
+		deleteButton.setOnClickListener(TripDisplay.this);
 
 
 //		final int item_id = cursor.getInt(cursor.getColumnIndex(SQLiteAdapter.KEY_ID));
@@ -61,38 +63,43 @@ public class TripDisplay extends Activity implements OnClickListener {
 //		String item_startLon = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_LON));
 //		String item_endLat = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_LAT));
 //		String item_endLon = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_LON));
-//		ArrayList<String> item_speeds = (ArrayList<String>) splitSpeeds(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_SPEEDS)));
+		ArrayList<String> item_speeds = (ArrayList<String>) splitSpeeds(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_SPEEDS)));
 //		ArrayList<String> item_locations = (ArrayList<String>) splitLocations(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_LOCATIONS)));
 		ArrayList<String> item_times = (ArrayList<String>) splitTimes(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TIMES)));
 
-//		String bitch = "";
-//		for (String s: item_speeds) {
-//			bitch += s + ", ";
-//		}
+		Double max = 0.0;
+		for (String s: item_speeds) {
+			Double newSpeed = (round(Double.parseDouble(s), 2, BigDecimal.ROUND_HALF_UP));
+			if (newSpeed > max) {
+				max = newSpeed;
+			}
+		}
 
 
 		TextView tripName;
 		TextView tripDate;
 		TextView tripDistance;
 		TextView tripSpeed;
+		TextView tripMaxSpeed;
 		TextView tripTime;
-		TextView tripSpeedsTitle;
+//		TextView tripSpeedsTitle;
 		tripName = (TextView)findViewById(R.id.trip_name);
 		tripDate = (TextView)findViewById(R.id.trip_date);
 		tripDistance = (TextView)findViewById(R.id.trip_distance);
 		tripSpeed = (TextView)findViewById(R.id.trip_speed);
+		tripMaxSpeed = (TextView)findViewById(R.id.trip_max_speed);
 		tripTime = (TextView)findViewById(R.id.trip_time);
-		tripSpeedsTitle = (TextView)findViewById(R.id.trip_speeds_title);
+//		tripSpeedsTitle = (TextView)findViewById(R.id.trip_speeds_title);
 		tripName.setText(item_name);
 		tripDate.setText(item_time.substring(0, 5) + " on " + item_date);
 		
 		
 
-		if (getDistanceMeasurement().equals("mi")) {
-			tripSpeedsTitle.setText("Speeds (mi)");
-		} else {
-			tripSpeedsTitle.setText("Speeds (km)");
-		}
+//		if (getDistanceMeasurement().equals("mi")) {
+//			tripSpeedsTitle.setText("Speeds (mi)");
+//		} else {
+//			tripSpeedsTitle.setText("Speeds (km)");
+//		}
 		if (getDistanceMeasurement().equals("mi")) {
 			tripDistance.setText(Double.toString(round(Double.parseDouble(item_distance), 2, BigDecimal.ROUND_HALF_UP)) + " " + getDistanceMeasurement());
 		} else {
@@ -100,8 +107,10 @@ public class TripDisplay extends Activity implements OnClickListener {
 		}
 		if (getSpeedMeasurement().equals("mph")) {
 			tripSpeed.setText(Double.toString(round(Double.parseDouble(item_speed), 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
+			tripMaxSpeed.setText(Double.toString(max) + " " + getSpeedMeasurement());
 		} else {
 			tripSpeed.setText(Double.toString(round((Double.parseDouble(item_speed)* 1.60934), 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
+			tripMaxSpeed.setText(Double.toString(round((max * 1.60934), 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
 		}
 
 		tripTime.setText(formatTime(Integer.parseInt(item_trip_time)));
@@ -111,9 +120,9 @@ public class TripDisplay extends Activity implements OnClickListener {
 			rounded_item_speeds.add(t);
 		}
 
-		lv = (ListView)findViewById(R.id.speedsContentList);
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rounded_item_speeds);
-		lv.setAdapter(arrayAdapter); 
+//		lv = (ListView)findViewById(R.id.speedsContentList);
+//		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rounded_item_speeds);
+//		lv.setAdapter(arrayAdapter); 
 
 	}
 	
@@ -129,6 +138,20 @@ public class TripDisplay extends Activity implements OnClickListener {
 			LineGraph line = new LineGraph(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_SPEEDS)), cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TIMES)), getSpeedMeasurement());
 			Intent lineIntent = line.getIntent(this);
 			startActivity(lineIntent);
+			break;
+		case R.id.delete_button:
+			
+			new AlertDialog.Builder(this)
+			.setMessage("Are you sure you want to delete this trip?")
+			.setCancelable(false)
+			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					mySQLiteAdapterReader.delete_byID(key);
+					TripDisplay.this.finish();
+				}
+			})
+			.setNegativeButton("No", null)
+			.show();
 			break;
 		}
 	}
@@ -251,7 +274,8 @@ public class TripDisplay extends Activity implements OnClickListener {
 	}
 	
 	public static List<String> splitSpeeds(String source) {
-		Pattern p = Pattern.compile("([01]?[0-9]|2[0-3])(:)([0-5][0-9])");
+		//Pattern p = Pattern.compile("([01]?[0-9]|2[0-3])(:)([0-5][0-9])");
+		Pattern p = Pattern.compile("\\b([0-9]+)(\\.)([0-9]+)\\b");
 		Matcher m = p.matcher(source);
 		List<String> result = new ArrayList<String>();
 		while (m.find()) {
@@ -270,9 +294,9 @@ public class TripDisplay extends Activity implements OnClickListener {
 		return result;
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.settings, menu);
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.settings, menu);
+//		return true;
+//	}
 }

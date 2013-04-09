@@ -18,6 +18,12 @@
             android:key="listpref"
             android:summary="Distance &amp; Speed Measument"
             android:title="Measurement" />
+        <ListPreference
+            android:entries="@array/listMapOptions"
+            android:entryValues="@array/listMapValues"
+            android:key="listMapPref"
+            android:summary="Choose between Terrain or Satelite"
+            android:title="Map View" />
     </PreferenceCategory>
 
 </PreferenceScreen>

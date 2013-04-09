@@ -2,4 +2,25 @@
 
     <style name="AppTheme" parent="android:Theme.Light" />
 
+    <color name="white">#FFF2F2F2</color>
+    <color name="black">#FF000000</color>
+    <color name="red">#FF3030</color>
+
+    <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:bottomBright">@color/white</item>
+    <item name="android:bottomDark">@color/white</item>
+    <item name="android:bottomMedium">@color/white</item>
+    <item name="android:centerBright">@color/white</item>
+    <item name="android:centerDark">@color/white</item>
+    <item name="android:centerMedium">@color/white</item>
+    <item name="android:fullBright">@color/red</item>
+    <item name="android:fullDark">@color/red</item>
+    <item name="android:topBright">@color/black</item>
+    <item name="android:topDark">@color/black</item>
+    </style>
+
+    <style name="MyTheme">
+        <item name="android:alertDialogStyle">@style/CustomDialogTheme</item>
+    </style>
+
 </resources>
