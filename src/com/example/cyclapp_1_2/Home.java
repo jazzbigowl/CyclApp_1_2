@@ -7,7 +7,6 @@ import android.provider.Settings;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,8 +34,8 @@ public class Home extends Activity implements OnClickListener {
 		String namePref = prefs.getString("name", "");
 		if (namePref != "") {
 			TextView welcomeBanner;
-//			welcomeBanner = (TextView)findViewById(R.id.home_title);
-//			welcomeBanner.setText("Welcome " + namePref);
+			welcomeBanner = (TextView)findViewById(R.id.home_title);
+			welcomeBanner.setText("Welcome " + namePref);
 		}
 
 		// Listeners for Buttons
@@ -53,8 +51,6 @@ public class Home extends Activity implements OnClickListener {
 		View exit = findViewById(R.id.exit_button);
 		exit.getBackground().setColorFilter(new LightingColorFilter(Color.DKGRAY, Color.DKGRAY));
 		exit.setOnClickListener(Home.this);
-//		View test = findViewById(R.id.test_button);
-//		test.setOnClickListener(Home.this);
 
 	}
 	
@@ -62,10 +58,6 @@ public class Home extends Activity implements OnClickListener {
 	@SuppressLint("NewApi")
 	public void onClick(View v) {
 		switch (v.getId()) {
-//		case R.id.test_button:
-//			Intent t = new Intent(this, Test.class);
-//			startActivity(t);
-//			break;
 		case R.id.sat_nav_button:
 			LocationManager alm = (LocationManager)this.getSystemService( Context.LOCATION_SERVICE );
 			if( alm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER ) ) {
@@ -83,22 +75,10 @@ public class Home extends Activity implements OnClickListener {
 				= new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				dialogTxt_id.setLayoutParams(dialogTxt_idLayoutParams);
 				dialogTxt_id.setText(String.valueOf(" You must enable GPS on your device."));
-
-
-				//				final EditText dialogName_id = new EditText(Home.this);
-				//				@SuppressWarnings("deprecation")
-				//				LayoutParams dialogName_idLayoutParams
-				//				= new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-				//				dialogName_id.setLayoutParams(dialogName_idLayoutParams);
-
-
 				LinearLayout layout = new LinearLayout(Home.this);
 				layout.setOrientation(LinearLayout.VERTICAL);
-				//		layout.addView(dialogTxt_id);
-
 				layout.addView(dialogTxt_id);
 				myDialog.setView(layout);
-
 				myDialog.setNegativeButton("Settings", new DialogInterface.OnClickListener() {
 					// do something when the button is clicked
 					public void onClick(DialogInterface arg0, int arg1) {
@@ -116,9 +96,6 @@ public class Home extends Activity implements OnClickListener {
 				myDialog.show();
 
 			}
-
-			//			Intent st = new Intent(this, Navigation.class);
-			//			startActivity(st);
 			break;
 		case R.id.view_past_rides_button:
 			Intent h = new Intent(this, History.class);
@@ -127,32 +104,6 @@ public class Home extends Activity implements OnClickListener {
 		case R.id.about_button:
 			Intent a = new Intent(this, About.class);
 			startActivity(a);
-			
-			
-			
-			
-//			AlertDialog.Builder myDialog = new AlertDialog.Builder(Home.this, R.style.Theme.Dialog);
-//			//Dialog myDialog = new Dialog(Home.this, R.style.CustomDialogTheme);
-//			myDialog.setTitle("Warning!");
-//			
-//			//myDialog.setContentView(R.layout.fragment_features_dialog);
-//			TextView dialogTxt_id = new TextView(Home.this);
-//			LayoutParams dialogTxt_idLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-//			dialogTxt_id.setLayoutParams(dialogTxt_idLayoutParams);
-//			dialogTxt_id.setText(String.valueOf("THIS IS S TEST"));
-//			LinearLayout layout = new LinearLayout(Home.this);
-//			layout.setOrientation(LinearLayout.VERTICAL);
-//			layout.addView(dialogTxt_id);
-//			myDialog.setView(layout);
-////			myDialog.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-////				// do something when the button is clicked
-////				public void onClick(DialogInterface arg0, int arg1) {
-////					Home.this.finish();
-////				}
-////			});
-//			myDialog.show();
-
-			
 			break;
 		case R.id.exit_button:
 			new AlertDialog.Builder(this)
@@ -167,7 +118,6 @@ public class Home extends Activity implements OnClickListener {
 			.show();
 			break;
 		}
-
 	}
 
 	@Override
@@ -188,13 +138,11 @@ public class Home extends Activity implements OnClickListener {
 			.setCancelable(false)
 			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					//CustomTabActivity.this.finish();
 					Home.this.finish();
 				}
 			})
 			.setNegativeButton("No", null)
 			.show();
-			//this.finish();
 			return true;
 		}
 		return false;

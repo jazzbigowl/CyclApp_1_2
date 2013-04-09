@@ -42,15 +42,10 @@ public class LineGraph {
 				speeds.add((int) Double.parseDouble((tmpSpeeds.get(i))));
 			}
 		}
-		//speeds = tmp.toArray();
 	}
 
 	public Intent getIntent(Context context) {
-
 		TimeSeries series = new TimeSeries("Speeds");
-		//		for (int i = 0; i < speeds.length; i++) {
-		//			series.add(speeds[i], i);
-		//		}
 
 		for (int i = 0; i < speeds.size(); i++) {
 			series.add(i, speeds.get(i));
@@ -79,21 +74,7 @@ public class LineGraph {
 		mRenderer.setYLabelsColor(0, Color.BLACK);
 		mRenderer.setZoomButtonsVisible(true);
 
-		//		int xLabels = mRenderer.getXLabels();
 		mRenderer.setXLabels(0); 
-		//		mRenderer.setXLabelsAngle(40);
-
-		//		ArrayList<Integer> list = new ArrayList<Integer>();
-		//		for (int i = 1; i < xLabels; i++) {
-		//			list.add(times.size()/i);
-		//		}
-		//		for (Integer i: list) {
-		//			mRenderer.addXTextLabel(i, times.get(i));
-		//		}
-
-		//		for (int i = 0; i < times.size(); i++) {
-		//			mRenderer.addXTextLabel(i, times.get(i));
-		//		}
 		mRenderer.addXTextLabel(0, times.get(0));
 		mRenderer.addXTextLabel(((times.size()- 1)/2), times.get((times.size()-1)/2));
 		mRenderer.addXTextLabel((times.size()- 1), times.get(times.size()- 1));

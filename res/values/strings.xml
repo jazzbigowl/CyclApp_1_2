@@ -47,7 +47,7 @@
      <string name="refresh">Refresh</string>
 
     <!-- Trip Display Screen -->
-    <string name="title_activity_journey_display">JourneyDisplay</string>
+    <string name="title_activity_journey_display">Journey</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_test">Test</string>
     <string name="trip_name">not found&#8230;</string>
@@ -75,6 +75,6 @@
 
     <!-- Preferences Screen -->
     <string name="title_activity_preferences">Preferences</string>
-    <string name="title_activity_route_map">RouteMap</string>
+    <string name="title_activity_route_map">Route</string>
 
 </resources>

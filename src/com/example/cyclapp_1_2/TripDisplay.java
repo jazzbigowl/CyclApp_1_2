@@ -14,10 +14,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,7 +23,6 @@ public class TripDisplay extends Activity implements OnClickListener {
 	int key;
 	String locations;
 	private SQLiteAdapterReader mySQLiteAdapterReader;
-	//	SimpleCursorAdapter cursorAdapter;
 	Cursor cursor;
 	ListView lv;
 
@@ -50,21 +47,21 @@ public class TripDisplay extends Activity implements OnClickListener {
 		deleteButton.setOnClickListener(TripDisplay.this);
 
 
-//		final int item_id = cursor.getInt(cursor.getColumnIndex(SQLiteAdapter.KEY_ID));
+		//		final int item_id = cursor.getInt(cursor.getColumnIndex(SQLiteAdapter.KEY_ID));
 		String item_name = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_NAME));
 		String item_date = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_DATE));
 		String item_time = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TIME));
 		String item_distance = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TRIP_DISTANCE));
 		String item_speed = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_AVERAGE_SPEED));
-//		String item_start = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_TIME));
-//		String item_end = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_TIME));
+		//		String item_start = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_TIME));
+		//		String item_end = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_TIME));
 		String item_trip_time = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TRIP_TIME));
-//		String item_startLat = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_LAT));
-//		String item_startLon = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_LON));
-//		String item_endLat = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_LAT));
-//		String item_endLon = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_LON));
+		//		String item_startLat = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_LAT));
+		//		String item_startLon = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_LON));
+		//		String item_endLat = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_LAT));
+		//		String item_endLon = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_LON));
 		ArrayList<String> item_speeds = (ArrayList<String>) splitSpeeds(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_SPEEDS)));
-//		ArrayList<String> item_locations = (ArrayList<String>) splitLocations(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_LOCATIONS)));
+		//		ArrayList<String> item_locations = (ArrayList<String>) splitLocations(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_LOCATIONS)));
 		ArrayList<String> item_times = (ArrayList<String>) splitTimes(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TIMES)));
 
 		Double max = 0.0;
@@ -82,24 +79,15 @@ public class TripDisplay extends Activity implements OnClickListener {
 		TextView tripSpeed;
 		TextView tripMaxSpeed;
 		TextView tripTime;
-//		TextView tripSpeedsTitle;
 		tripName = (TextView)findViewById(R.id.trip_name);
 		tripDate = (TextView)findViewById(R.id.trip_date);
 		tripDistance = (TextView)findViewById(R.id.trip_distance);
 		tripSpeed = (TextView)findViewById(R.id.trip_speed);
 		tripMaxSpeed = (TextView)findViewById(R.id.trip_max_speed);
 		tripTime = (TextView)findViewById(R.id.trip_time);
-//		tripSpeedsTitle = (TextView)findViewById(R.id.trip_speeds_title);
 		tripName.setText(item_name);
 		tripDate.setText(item_time.substring(0, 5) + " on " + item_date);
-		
-		
 
-//		if (getDistanceMeasurement().equals("mi")) {
-//			tripSpeedsTitle.setText("Speeds (mi)");
-//		} else {
-//			tripSpeedsTitle.setText("Speeds (km)");
-//		}
 		if (getDistanceMeasurement().equals("mi")) {
 			tripDistance.setText(Double.toString(round(Double.parseDouble(item_distance), 2, BigDecimal.ROUND_HALF_UP)) + " " + getDistanceMeasurement());
 		} else {
@@ -119,13 +107,8 @@ public class TripDisplay extends Activity implements OnClickListener {
 		for (String t: item_times) {
 			rounded_item_speeds.add(t);
 		}
-
-//		lv = (ListView)findViewById(R.id.speedsContentList);
-//		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rounded_item_speeds);
-//		lv.setAdapter(arrayAdapter); 
-
 	}
-	
+
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.view_trip_button:
@@ -140,7 +123,7 @@ public class TripDisplay extends Activity implements OnClickListener {
 			startActivity(lineIntent);
 			break;
 		case R.id.delete_button:
-			
+
 			new AlertDialog.Builder(this)
 			.setMessage("Are you sure you want to delete this trip?")
 			.setCancelable(false)
@@ -272,9 +255,8 @@ public class TripDisplay extends Activity implements OnClickListener {
 		}
 		return result;
 	}
-	
+
 	public static List<String> splitSpeeds(String source) {
-		//Pattern p = Pattern.compile("([01]?[0-9]|2[0-3])(:)([0-5][0-9])");
 		Pattern p = Pattern.compile("\\b([0-9]+)(\\.)([0-9]+)\\b");
 		Matcher m = p.matcher(source);
 		List<String> result = new ArrayList<String>();
@@ -283,7 +265,7 @@ public class TripDisplay extends Activity implements OnClickListener {
 		}
 		return result;
 	}
-	
+
 	public static List<String> splitTimes(String source) {
 		Pattern p = Pattern.compile("\\b(\\d\\d\\:\\d\\d\\:\\d\\d)\\b");
 		Matcher m = p.matcher(source);
@@ -293,10 +275,4 @@ public class TripDisplay extends Activity implements OnClickListener {
 		}
 		return result;
 	}
-
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.settings, menu);
-//		return true;
-//	}
 }

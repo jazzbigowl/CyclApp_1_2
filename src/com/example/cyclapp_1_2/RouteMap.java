@@ -28,7 +28,6 @@ import android.preference.PreferenceManager;
 public class RouteMap extends MapActivity {
 	private MapView mapView;
 	private MapController controller;
-//	private PositionOverlay myPositionOverlay;
 
 	double startLat, startLon, endLat, endLon;
 	int key;
@@ -38,7 +37,6 @@ public class RouteMap extends MapActivity {
 	Cursor cursor;
 
 	//Route stuff
-//	private List<Overlay> mapOverlays;
 	private Projection projection; 
 
 
@@ -49,7 +47,6 @@ public class RouteMap extends MapActivity {
 		Bundle extras = getIntent().getExtras();
 
 		key = extras.getInt("key");
-		//	stringLocations = extras.getString("locations");
 		mySQLiteAdapterReader = new SQLiteAdapterReader(this);
 		mySQLiteAdapterReader.openToRead();
 
@@ -91,12 +88,9 @@ public class RouteMap extends MapActivity {
 		mapOverlays.add(itemizedoverlayStart);
 		mapOverlays.add(itemizedoverlayEnd);
 
-
 		mapOverlays = mapView.getOverlays();        
 		projection = mapView.getProjection();
 		mapOverlays.add(new MyOverlay(locationsArray)); 	
-
-
 
 		Integer newStartLat = (int) (startLat * 1E6);
 		Integer newEndLat = (int) (endLat * 1E6);
@@ -114,7 +108,6 @@ public class RouteMap extends MapActivity {
 	public ArrayList<Location> splitLocations(String source) {
 		ArrayList<Location> locs = new ArrayList<Location>();
 		Pattern p = Pattern.compile("\\b([0-9]+\\.[0-9]+)|(-[0-9]+\\.[0-9]+)\\b");
-		//		Pattern p = Pattern.compile("\\b(.+)\\,\\b");
 		Matcher m = p.matcher(source);
 		List<String> result = new ArrayList<String>();
 		while (m.find()) {
@@ -154,26 +147,6 @@ public class RouteMap extends MapActivity {
 			mPaint.setStrokeCap(Paint.Cap.ROUND);
 			mPaint.setStrokeWidth(2);
 
-			//			GeoPoint gP1 = new GeoPoint((int) (from.getLatitude()* 1e6), (int) (from.getLongitude()* 1e6));
-			//			GeoPoint gP2 = new GeoPoint((int) (to.getLatitude()* 1e6), (int) (to.getLongitude()* 1e6));
-
-
-			//			GeoPoint gP1 = new GeoPoint((int) (theseLocations.get(0).getLatitude()* 1e6), (int) (theseLocations.get(0).getLongitude()* 1e6));
-			//			GeoPoint gP2 = new GeoPoint((int) (theseLocations.get(theseLocations.size() - 1).getLatitude()* 1e6), (int) (theseLocations.get(theseLocations.size() - 1).getLongitude()* 1e6));
-			//			
-			//			Point p1 = new Point();
-			//			Point p2 = new Point();
-			//			Path path = new Path();
-			//
-			//			projection.toPixels(gP1, p1);
-			//			projection.toPixels(gP2, p2);
-			//
-			//			path.moveTo(p2.x, p2.y);
-			//			path.lineTo(p1.x,p1.y);
-			//
-			//			canvas.drawPath(path, mPaint);
-
-
 			for (int i = 0; i < theseLocations.size() - 1; i++) {
 				GeoPoint gP1 = new GeoPoint((int) (theseLocations.get(i).getLatitude()* 1e6), (int) (theseLocations.get(i).getLongitude()* 1e6));
 				GeoPoint gP2 = new GeoPoint((int) (theseLocations.get(i + 1).getLatitude()* 1e6), (int) (theseLocations.get(i + 1).getLongitude()* 1e6));
@@ -186,9 +159,7 @@ public class RouteMap extends MapActivity {
 				path.lineTo(p1.x,p1.y);
 
 				canvas.drawPath(path, mPaint);
-
 			}
 		}
-
 	}
 }
