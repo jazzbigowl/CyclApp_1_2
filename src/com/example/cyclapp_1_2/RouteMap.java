@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 
 import java.util.ArrayList;
@@ -47,12 +52,15 @@ public class RouteMap extends MapActivity {
 		Bundle extras = getIntent().getExtras();
 
 		key = extras.getInt("key");
+		
+		// initialise database reader
 		mySQLiteAdapterReader = new SQLiteAdapterReader(this);
 		mySQLiteAdapterReader.openToRead();
 
 		cursor = mySQLiteAdapterReader.queueOne(key);
 		cursor.moveToFirst();
 
+		// get needed location variables
 		startLat = Double.parseDouble(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_LAT)));
 		startLon = Double.parseDouble(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_LON)));
 		endLat = Double.parseDouble(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_LAT)));
@@ -60,6 +68,7 @@ public class RouteMap extends MapActivity {
 		stringLocations = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_LOCATIONS));
 		locationsArray = splitLocations(stringLocations);
 
+		//initiate map according to user preferences
 		mapView = (MapView) findViewById(R.id.routeMap);
 		controller = mapView.getController();
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RouteMap.this);
@@ -71,18 +80,16 @@ public class RouteMap extends MapActivity {
 		}
 		mapView.setBuiltInZoomControls(true);
 
+		// draw green and red flag
 		List<Overlay> mapOverlays = mapView.getOverlays();
 		Drawable drawableStart = this.getResources().getDrawable(R.drawable.start);
 		Drawable drawableEnd = this.getResources().getDrawable(R.drawable.end);
 		HelloItemizedOverlay itemizedoverlayStart = new HelloItemizedOverlay(drawableStart, this);
 		HelloItemizedOverlay itemizedoverlayEnd = new HelloItemizedOverlay(drawableEnd, this);
-
 		GeoPoint pointStart = new GeoPoint((int)(startLat* 1e6),(int)(startLon* 1e6));
 		OverlayItem overlayitem = new OverlayItem(pointStart, "Start", Double.toString(startLat) + " " + Double.toString(startLon));
-
 		GeoPoint pointEnd = new GeoPoint((int)(endLat* 1e6),(int)(endLon* 1e6));
 		OverlayItem overlayitem2 = new OverlayItem(pointEnd, "End", Double.toString(endLat) + " " + Double.toString(endLon));
-
 		itemizedoverlayStart.addOverlay(overlayitem);
 		itemizedoverlayEnd.addOverlay(overlayitem2);
 		mapOverlays.add(itemizedoverlayStart);
@@ -97,6 +104,7 @@ public class RouteMap extends MapActivity {
 		Integer newStartLon = (int) (startLon * 1E6);
 		Integer newEndLon = (int) (endLon * 1E6);
 
+		// focus map on route
 		controller.zoomToSpan(Math.abs(newStartLat - newEndLat), Math.abs(newStartLon - newEndLon));
 		controller.animateTo(new GeoPoint(((int)((startLat + endLat) * 1E6))/2, ((int)((startLon + endLon) * 1E6))/2 )); 
 	}
@@ -105,7 +113,7 @@ public class RouteMap extends MapActivity {
 
 
 
-	public ArrayList<Location> splitLocations(String source) {
+	private ArrayList<Location> splitLocations(String source) { // split location string, and store into arraylist
 		ArrayList<Location> locs = new ArrayList<Location>();
 		Pattern p = Pattern.compile("\\b([0-9]+\\.[0-9]+)|(-[0-9]+\\.[0-9]+)\\b");
 		Matcher m = p.matcher(source);
@@ -130,7 +138,7 @@ public class RouteMap extends MapActivity {
 
 
 
-	class MyOverlay extends Overlay{
+	class MyOverlay extends Overlay{ //overlay class for displaying route
 		ArrayList<Location> theseLocations;
 		public MyOverlay(ArrayList<Location> locs){
 			theseLocations = locs;
@@ -147,6 +155,7 @@ public class RouteMap extends MapActivity {
 			mPaint.setStrokeCap(Paint.Cap.ROUND);
 			mPaint.setStrokeWidth(2);
 
+			// draw each little red line on map
 			for (int i = 0; i < theseLocations.size() - 1; i++) {
 				GeoPoint gP1 = new GeoPoint((int) (theseLocations.get(i).getLatitude()* 1e6), (int) (theseLocations.get(i).getLongitude()* 1e6));
 				GeoPoint gP2 = new GeoPoint((int) (theseLocations.get(i + 1).getLatitude()* 1e6), (int) (theseLocations.get(i + 1).getLongitude()* 1e6));

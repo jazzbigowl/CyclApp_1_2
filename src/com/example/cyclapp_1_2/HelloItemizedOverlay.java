@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 import java.util.ArrayList;
 
@@ -13,11 +18,18 @@ public class HelloItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	Context mContext;
 	
-
+	/**
+	 * Class constructor.
+	 */
 	public HelloItemizedOverlay(Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
 	}
 	
+	/**
+	 * Add an overlay item to set of overlays
+	 *
+	 * @param  overlay  Overlay to add to set of overlays.
+	 */
 	public void addOverlay(OverlayItem overlay) {
 	    mOverlays.add(overlay);
 	    populate();
@@ -33,6 +45,9 @@ public class HelloItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	  return mOverlays.size();
 	}
 	
+	/**
+	 * Class constructor.
+	 */
 	public HelloItemizedOverlay(Drawable defaultMarker, Context context) {
 		  super(boundCenterBottom(defaultMarker));
 		  mContext = context;

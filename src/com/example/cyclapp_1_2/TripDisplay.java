@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 
 import java.math.BigDecimal;
@@ -33,12 +38,14 @@ public class TripDisplay extends Activity implements OnClickListener {
 		Bundle extras = getIntent().getExtras();
 		key = extras.getInt("myKey");
 
+		// initiate database reader
 		mySQLiteAdapterReader = new SQLiteAdapterReader(this);
 		mySQLiteAdapterReader.openToRead();
 
 		cursor = mySQLiteAdapterReader.queueOne(key);
 		cursor.moveToFirst();
 
+		// button listeners
 		View viewRouteButton = findViewById(R.id.view_trip_button);
 		viewRouteButton.setOnClickListener(TripDisplay.this);
 		View viewSpeedsButton = findViewById(R.id.view_speeds_button);
@@ -46,24 +53,16 @@ public class TripDisplay extends Activity implements OnClickListener {
 		View deleteButton = findViewById(R.id.delete_button);
 		deleteButton.setOnClickListener(TripDisplay.this);
 
-
-		//		final int item_id = cursor.getInt(cursor.getColumnIndex(SQLiteAdapter.KEY_ID));
+		// get needed variables from database
 		String item_name = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_NAME));
 		String item_date = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_DATE));
 		String item_time = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TIME));
 		String item_distance = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TRIP_DISTANCE));
 		String item_speed = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_AVERAGE_SPEED));
-		//		String item_start = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_TIME));
-		//		String item_end = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_TIME));
 		String item_trip_time = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TRIP_TIME));
-		//		String item_startLat = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_LAT));
-		//		String item_startLon = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_START_LON));
-		//		String item_endLat = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_LAT));
-		//		String item_endLon = cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_END_LON));
 		ArrayList<String> item_speeds = (ArrayList<String>) splitSpeeds(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_SPEEDS)));
-		//		ArrayList<String> item_locations = (ArrayList<String>) splitLocations(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_LOCATIONS)));
-		ArrayList<String> item_times = (ArrayList<String>) splitTimes(cursor.getString(cursor.getColumnIndex(SQLiteAdapter.KEY_TIMES)));
 
+		// work out maximum speed
 		Double max = 0.0;
 		for (String s: item_speeds) {
 			Double newSpeed = (round(Double.parseDouble(s), 2, BigDecimal.ROUND_HALF_UP));
@@ -88,11 +87,14 @@ public class TripDisplay extends Activity implements OnClickListener {
 		tripName.setText(item_name);
 		tripDate.setText(item_time.substring(0, 5) + " on " + item_date);
 
+		// display distance
 		if (getDistanceMeasurement().equals("mi")) {
 			tripDistance.setText(Double.toString(round(Double.parseDouble(item_distance), 2, BigDecimal.ROUND_HALF_UP)) + " " + getDistanceMeasurement());
 		} else {
 			tripDistance.setText(Double.toString(round((Double.parseDouble(item_distance) * 1.60934), 2, BigDecimal.ROUND_HALF_UP)) + " " + getDistanceMeasurement());
 		}
+		
+		// display speed
 		if (getSpeedMeasurement().equals("mph")) {
 			tripSpeed.setText(Double.toString(round(Double.parseDouble(item_speed), 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
 			tripMaxSpeed.setText(Double.toString(max) + " " + getSpeedMeasurement());
@@ -101,12 +103,8 @@ public class TripDisplay extends Activity implements OnClickListener {
 			tripMaxSpeed.setText(Double.toString(round((max * 1.60934), 2, BigDecimal.ROUND_HALF_UP)) + " " + getSpeedMeasurement());
 		}
 
+		//display time
 		tripTime.setText(formatTime(Integer.parseInt(item_trip_time)));
-
-		ArrayList<String> rounded_item_speeds = new ArrayList<String>();
-		for (String t: item_times) {
-			rounded_item_speeds.add(t);
-		}
 	}
 
 	public void onClick(View v) {
@@ -139,7 +137,7 @@ public class TripDisplay extends Activity implements OnClickListener {
 		}
 	}
 
-	private String formatTime(Integer time) {
+	private String formatTime(Integer time) {  //format time for displaying HH:MM:SS
 		int hours = 0;
 		int minutes = 0;
 		int seconds = 0;
@@ -166,7 +164,7 @@ public class TripDisplay extends Activity implements OnClickListener {
 		return timeString;
 	}
 
-	public static double round(double unrounded, int precision, int roundingMode) {
+	private static double round(double unrounded, int precision, int roundingMode) { //method for rounding doubles
 		BigDecimal bd = new BigDecimal(unrounded);
 		BigDecimal rounded = bd.setScale(precision, roundingMode);
 		return rounded.doubleValue();
@@ -246,17 +244,7 @@ public class TripDisplay extends Activity implements OnClickListener {
 		}
 	}
 
-	public static List<String> splitLocations(String source) {
-		Pattern p = Pattern.compile("\\b([^\\w]?)([0-9]+)(\\.)([0-9]+)\\b");
-		Matcher m = p.matcher(source);
-		List<String> result = new ArrayList<String>();
-		while (m.find()) {
-			result.add(m.group());
-		}
-		return result;
-	}
-
-	public static List<String> splitSpeeds(String source) {
+	private static List<String> splitSpeeds(String source) {
 		Pattern p = Pattern.compile("\\b([0-9]+)(\\.)([0-9]+)\\b");
 		Matcher m = p.matcher(source);
 		List<String> result = new ArrayList<String>();
@@ -266,13 +254,4 @@ public class TripDisplay extends Activity implements OnClickListener {
 		return result;
 	}
 
-	public static List<String> splitTimes(String source) {
-		Pattern p = Pattern.compile("\\b(\\d\\d\\:\\d\\d\\:\\d\\d)\\b");
-		Matcher m = p.matcher(source);
-		List<String> result = new ArrayList<String>();
-		while (m.find()) {
-			result.add(m.group());
-		}
-		return result;
-	}
 }

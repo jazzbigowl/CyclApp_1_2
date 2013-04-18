@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 
 import java.math.BigDecimal;
@@ -40,8 +45,6 @@ import android.widget.Toast;
 
 public class Navigation extends MapActivity  implements OnClickListener {
 
-	Button buttonSortDefault, buttonSort1;
-
 	private SQLiteAdapterWriter mySQLiteAdapterWriter;
 
 	SimpleCursorAdapter cursorAdapter;
@@ -53,6 +56,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 	int hours = 0;
 	int minutes = 0;
 	int seconds = 0;
+	double distance;
 	Location curLocation, oldLocation, startLocation, endLocation;
 	double curLocationTime = 0, oldLocationTime = 0, startLocationTime = 0, endLocationTime = 0; // in milliseconds
 	ArrayList<Location> Locations = new ArrayList<Location>();
@@ -76,7 +80,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		setContentView(R.layout.navigation);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
+		// initiate writer to database
 		mySQLiteAdapterWriter = new SQLiteAdapterWriter(this);
 		mySQLiteAdapterWriter.openToWrite();
 
@@ -84,6 +88,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		String svcName = Context.LOCATION_SERVICE;
 		locationManager = (LocationManager)getSystemService(svcName);
 
+		// set up location retrieving criterias
 		Criteria criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		criteria.setPowerRequirement(Criteria.POWER_LOW);
@@ -93,12 +98,14 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		criteria.setCostAllowed(true);
 		String provider = locationManager.getBestProvider(criteria, true);
 
+		//get current location
 		Location curLocation = locationManager.getLastKnownLocation(provider);
 
 		updateWithNewLocation(curLocation);
 
 		locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
 
+		//listeners
 		View startStopButton = findViewById(R.id.start_stop_button);
 		startStopButton.setOnClickListener(Navigation.this);
 		View pauseResumeButton = findViewById(R.id.pause_resume_button);
@@ -163,7 +170,8 @@ public class Navigation extends MapActivity  implements OnClickListener {
 			}
 			break;
 		case R.id.map_button:
-			Intent map = new Intent(this, Map.class);
+			Intent map = new Intent(this, Map.class); 
+			// all the extras bellow are unecesary right now, but may come in useful when improving app
 			if (isRunning && !isPaused) {
 				map.putExtra("isRunning", true);
 				map.putExtra("isPaused", false);
@@ -183,7 +191,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 	}
 
 	@Override
-	public void onBackPressed() {
+	public void onBackPressed() { // prompt user when exiting this activity, he will lose data if not saved
 		AlertDialog.Builder myDialog
 		= new AlertDialog.Builder(Navigation.this);
 
@@ -213,7 +221,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		myDialog.show();
 	}
 
-	private void getNameDialog() {
+	private void getNameDialog() { // prompt user for a name to save the journey
 		AlertDialog.Builder myDialog
 		= new AlertDialog.Builder(Navigation.this);
 		myDialog.setTitle("Enter Trip Name");
@@ -238,7 +246,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 	}
 
 	@SuppressLint("SimpleDateFormat")
-	private void addToDB() {
+	private void addToDB() { // add all the journey's details to the database
 		if (Speeds.size() != 0) {
 			// Work out name
 			String data_name = tripName;
@@ -268,8 +276,12 @@ public class Navigation extends MapActivity  implements OnClickListener {
 			ave = ave / Speeds.size();
 
 			// work out trip distance
-			double tripDistance = calculateDistance(Locations.get(0).getLatitude(), Locations.get(0).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude());
-
+//			double tripDistance = 0;
+//			for (int i = 1; i < Locations.size(); i++) {
+//				tripDistance += calculateDistance(Locations.get(i - 1).getLatitude(), Locations.get(i - 1).getLongitude(), Locations.get(i).getLatitude(), Locations.get(i).getLongitude());
+//			}
+			
+			// variable to add to database
 			String data_trip_time = Integer.toString(time);
 			String data_start_lat = Double.toString(startLocation.getLatitude());
 			String data_start_lon = Double.toString(startLocation.getLongitude());
@@ -278,7 +290,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 			String data_ave_speed = Double.toString(ave);
 			String data_start_time = Double.toString(startLocationTime);
 			String data_end_time = Double.toString(endLocationTime);
-			String data_distance = Double.toString(tripDistance);
+			String data_distance = Double.toString(distance);
 			formatter = new SimpleDateFormat("E, dd MMM yyyy");
 			String data_date = formatter.format(new Date());
 			formatter = new SimpleDateFormat("HH:mm:ss");
@@ -299,7 +311,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		}
 	}
 
-	private String speedsToString() {
+	private String speedsToString() { //converts speeds to string for storing
 		String speedsAsString = "";
 		for (Double s: Speeds) {
 			speedsAsString += Double.toString(s) + ",";
@@ -309,7 +321,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		return speedsAsString;
 	}
 
-	private String locationsToString() {
+	private String locationsToString() { //converts locations to string for saving
 		String locationsAsString = "";
 		for (Location l: Locations) {
 			locationsAsString += Double.toString(l.getLatitude()) + "," + Double.toString(l.getLongitude()) + ",";
@@ -319,7 +331,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		return locationsAsString;
 	}
 
-	private String timesToString() {
+	private String timesToString() { // converts times to string for storing
 		String timesAsString = "";
 		for (String t: Times) {
 			timesAsString += t + ",";
@@ -336,7 +348,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 	}
 
 	@SuppressLint("SimpleDateFormat")
-	private void updateWithNewLocation(Location location) {
+	private void updateWithNewLocation(Location location) { // update on new locaiton received
 		TextView mySpeedText;
 		TextView myLocationText;
 		TextView myDistanceText;
@@ -344,6 +356,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		myLocationText = (TextView)findViewById(R.id.myLocationText);
 		myDistanceText = (TextView)findViewById(R.id.myDistanceText);
 
+		// work out latitudes and longitudes
 		String latLongString = "No location found";
 		if (location != null) {
 			oldLocationTime = curLocationTime;
@@ -358,6 +371,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 			latLongString = "Lat:" + lat + "\nLon:" + lng;
 		}
 
+		// work out speed
 		double speed = calculateSpeed();
 		if ((isRunning) && (!isPaused)) {
 			Speeds.add(speed);
@@ -370,10 +384,16 @@ public class Navigation extends MapActivity  implements OnClickListener {
 			mySpeedText.setText(Double.toString(round((speed* 1.60934), 2, BigDecimal.ROUND_HALF_UP)));
 		}
 
+		// updata distance fields
 		myLocationText.setText(latLongString);
 		if (Locations.size() != 0) {
-			double distance = calculateDistance(Locations.get(0).getLatitude(), Locations.get(0).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude());
+			if (Locations.size() <= 2) {
+			 distance += calculateDistance(Locations.get(0).getLatitude(), Locations.get(0).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude());
 			distance = round(distance, 2, BigDecimal.ROUND_HALF_UP);
+			} else {
+				 distance += calculateDistance(Locations.get(Locations.size() - 2).getLatitude(), Locations.get(Locations.size() - 2).getLongitude(), curLocation.getLatitude(), curLocation.getLongitude());
+				distance = round(distance, 2, BigDecimal.ROUND_HALF_UP);
+			}
 			if (getDistanceMeasurement().equals("mi")) {
 				myDistanceText.setText(Double.toString(distance));
 			} else {
@@ -384,13 +404,13 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		}
 	}
 
-	public static double round(double unrounded, int precision, int roundingMode) {
+	private static double round(double unrounded, int precision, int roundingMode) { //methods for rounding doubles
 		BigDecimal bd = new BigDecimal(unrounded);
 		BigDecimal rounded = bd.setScale(precision, roundingMode);
 		return rounded.doubleValue();
 	}
 
-	private final LocationListener locationListener = new LocationListener() {
+	private final LocationListener locationListener = new LocationListener() { // location listener
 		public void onLocationChanged(Location location) {
 			updateWithNewLocation(location);
 		}
@@ -412,7 +432,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 		}
 	};
 
-	private void setTimer() {
+	private void setTimer() { // setting up timer
 		final long elapse = 1000;
 		Runnable t = new Runnable() {
 			public void run()
@@ -428,7 +448,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 
 	}
 
-	private void runNextTimedTask() {
+	private void runNextTimedTask() { // task manager for timer
 		if (!isPaused) {
 			// run my task.
 			time += 1;		
@@ -468,7 +488,7 @@ public class Navigation extends MapActivity  implements OnClickListener {
 	}
 
 	// Method for calculating speed
-	public double calculateSpeed() {
+	private double calculateSpeed() {
 		if (oldLocationTime == 0) {
 			return 0;
 		} else {

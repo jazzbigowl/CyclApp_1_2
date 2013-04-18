@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 
 import java.util.List;
@@ -36,6 +41,7 @@ public class Map extends MapActivity {
 
 
 	private void initMapView() {
+		//Create map and check if user wants terrain or satellite mode
 		myMap = (MapView) findViewById(R.id.map);
 		controller = myMap.getController();
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Map.this);
@@ -50,7 +56,7 @@ public class Map extends MapActivity {
 	}
 
 	private void initMyLocation() {
-
+		//display users location on map
 		final MyLocationOverlay overlay = new MyLocationOverlay(this, myMap);
 		overlay.enableMyLocation();
 		// overlay.enableCompass(); // does not work in emulator

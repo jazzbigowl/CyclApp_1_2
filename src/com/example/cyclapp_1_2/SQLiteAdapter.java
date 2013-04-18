@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 
 import android.content.Context;
@@ -52,19 +57,36 @@ public class SQLiteAdapter {
 
 	public Context context;
 
+	/**
+	 * Class Constructor
+	 *
+	 * @param  c  Context passed into super
+	 */
 	public SQLiteAdapter(Context c){
 		context = c;
 	}
 
+	/**
+	 * Closes SQLiteHelper
+	 */
 	public void close(){
 		sqLiteHelper.close();
 	}
 
-	public int deleteAll(){
+	/**
+	 * Delete database
+	 *
+	 */
+	public int deleteAll(){//delete all records
 		return sqLiteDatabase.delete(MYDATABASE_TABLE, null, null);
 	}
 
-	public void delete_byID(int id){
+	/**
+	 * Delete one record in database
+	 *
+	 * @param  id  The id number of the record to delete
+	 */
+	public void delete_byID(int id){//delete one record
 		sqLiteDatabase.delete(MYDATABASE_TABLE, KEY_ID+"="+id, null);
 	}
 

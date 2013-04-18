@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 
 import android.graphics.Canvas;
@@ -17,9 +22,20 @@ public class PositionOverlay extends Overlay {
 		  
 		  Location location;
 
+		  /**
+		   * Get location.
+		   *
+		   * @return      The location variable.
+		   */
 		  public Location getLocation() {
 		    return location;
 		  }
+		  
+		  /**
+		   * Set the location.
+		   *
+		   * @param  location  Location to set as new location.
+		   */
 		  public void setLocation(Location location) {
 		    this.location = location;
 		  }

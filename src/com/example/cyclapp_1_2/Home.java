@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 
 import android.location.LocationManager;
@@ -29,7 +34,7 @@ public class Home extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
 
-
+		// get use name if any from shared preferences
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Home.this);
 		String namePref = prefs.getString("name", "");
 		if (namePref != "") {
@@ -58,13 +63,14 @@ public class Home extends Activity implements OnClickListener {
 	@SuppressLint("NewApi")
 	public void onClick(View v) {
 		switch (v.getId()) {
-		case R.id.sat_nav_button:
+		case R.id.sat_nav_button: // start navigation screen
 			LocationManager alm = (LocationManager)this.getSystemService( Context.LOCATION_SERVICE );
 			if( alm.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER ) ) {
 				//GPS Enabled
 				Intent st = new Intent(this, Navigation.class);
 				startActivity(st);
 			} else {
+				// if GPS is not enable, prompt user to do it
 				AlertDialog.Builder myDialog
 				= new AlertDialog.Builder(Home.this);
 
@@ -97,15 +103,15 @@ public class Home extends Activity implements OnClickListener {
 
 			}
 			break;
-		case R.id.view_past_rides_button:
+		case R.id.view_past_rides_button: // open History screen
 			Intent h = new Intent(this, History.class);
 			startActivity(h);
 			break;
-		case R.id.about_button:
+		case R.id.about_button: // open About screen
 			Intent a = new Intent(this, About.class);
 			startActivity(a);
 			break;
-		case R.id.exit_button:
+		case R.id.exit_button: // prompt user, then exit app
 			new AlertDialog.Builder(this)
 			.setMessage("Are you sure you want to exit?")
 			.setCancelable(false)

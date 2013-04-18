@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 
 import java.util.ArrayList;
@@ -30,10 +35,10 @@ public class LineGraph {
 		measurement = msr;
 		speedsString = spds;
 		timesString = tms;
-		tmpSpeeds = (ArrayList<String>) splitSpeeds(spds);
-		times = (ArrayList<String>) splitTimes(tms);
+		tmpSpeeds = (ArrayList<String>) splitSpeeds(spds); // get all speeds
+		times = (ArrayList<String>) splitTimes(tms); // get all times
 		speeds = new ArrayList<Integer>();
-		if (measurement.equals("kph")) {
+		if (measurement.equals("kph")) { // check if user wants miles or kilometres
 			for (int i = 0 ; i < tmpSpeeds.size(); i++) {
 				speeds.add((int) (Double.parseDouble((tmpSpeeds.get(i)))* 1.60934));
 			}
@@ -44,23 +49,32 @@ public class LineGraph {
 		}
 	}
 
+	/**
+	 * Get the object's intent.
+	 * Setting-up and drawing graph.
+	 *
+	 * @param  context  The object's context
+	 * @return      The object's intent.
+	 */
 	public Intent getIntent(Context context) {
 		TimeSeries series = new TimeSeries("Speeds");
 
-		for (int i = 0; i < speeds.size(); i++) {
+		for (int i = 0; i < speeds.size(); i++) { // add x and y values to points on graph
 			series.add(i, speeds.get(i));
 		}
 
+		// set up series
 		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
 		dataset.addSeries(series);
 
+		// set up renderer
 		XYSeriesRenderer renderer = new XYSeriesRenderer();
 		renderer.setColor(Color.BLACK);
 		renderer.setLineWidth(2);
 		renderer.setPointStyle(PointStyle.CIRCLE);
 		renderer.setFillPoints(true);
 
-
+		// set up multiple renderer and make is look pretty and all that jazz
 		XYMultipleSeriesRenderer mRenderer = new XYMultipleSeriesRenderer();
 		mRenderer.addSeriesRenderer(renderer);
 		mRenderer.setApplyBackgroundColor(true);
@@ -84,7 +98,7 @@ public class LineGraph {
 
 	}
 
-	public static List<String> splitSpeeds(String source) {
+	private static List<String> splitSpeeds(String source) { // split big string into speeds
 		Pattern p = Pattern.compile("\\b([0-9]+)\\.[0-9]+\\b");
 		Matcher m = p.matcher(source);
 		List<String> result = new ArrayList<String>();
@@ -94,7 +108,7 @@ public class LineGraph {
 		return result;
 	}
 
-	public static List<String> splitTimes(String source) {
+	private static List<String> splitTimes(String source) { // split big string into times
 		Pattern p = Pattern.compile("\\b(\\d\\d\\:\\d\\d\\:\\d\\d)\\b");
 		Matcher m = p.matcher(source);
 		List<String> result = new ArrayList<String>();

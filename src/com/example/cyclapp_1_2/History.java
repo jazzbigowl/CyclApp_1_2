@@ -1,3 +1,8 @@
+/*
+ * Author: Jeremy Bouchat
+ * Year: 2013
+ * Project Report: https://www.dropbox.com/s/8ba5y8kax3lqhz5/Report.docx
+ */
 package com.example.cyclapp_1_2;
 
 import android.app.Activity;
@@ -32,7 +37,7 @@ public class History extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.sort_date:
+		case R.id.sort_date: //On sort by date button click, reorder listview by date
 			cursor = mySQLiteAdapterReader.queueAll_SortBy_DATE();
 			String[] from1 = new String[]{SQLiteAdapter.KEY_DATE, SQLiteAdapter.KEY_NAME, SQLiteAdapter.KEY_TIME};
 			int[] to1 = new int[]{R.id.text2, R.id.text1, R.id.text3};
@@ -41,7 +46,7 @@ public class History extends Activity {
 			listContent.setAdapter(cursorAdapter);
 			updateList();
 			return true;
-		case R.id.sort_name:
+		case R.id.sort_name://ON sort by name Button click, reorder listview by name
 			cursor = mySQLiteAdapterReader.queueAll_SortBy_NAME();
 			String[] from2 = new String[]{SQLiteAdapter.KEY_NAME, SQLiteAdapter.KEY_DATE, SQLiteAdapter.KEY_TIME};
 			int[] to2 = new int[]{R.id.text1, R.id.text2, R.id.text3};
@@ -50,10 +55,10 @@ public class History extends Activity {
 			listContent.setAdapter(cursorAdapter);
 			updateList();
 			return true;
-		case R.id.refresh:
+		case R.id.refresh: //refresh list
 			updateList();
 			return true;
-		case R.id.delete_all:
+		case R.id.delete_all: // delete database and refresh listview
 			new AlertDialog.Builder(this)
 			.setMessage("Are you sure you want to delete all?")
 			.setCancelable(false)
@@ -66,10 +71,10 @@ public class History extends Activity {
 			.setNegativeButton("No", null)
 			.show();
 			return true;
-		case R.id.menu_settings:
+		case R.id.menu_settings: // open preference screen
 			startActivity(new Intent(History.this, Preferences.class));
 			return true;
-		case R.id.exit:
+		case R.id.exit: //prompt user, then close app
 			new AlertDialog.Builder(this)
 			.setMessage("Are you sure you want to exit?")
 			.setCancelable(false)
@@ -100,6 +105,7 @@ public class History extends Activity {
 		mySQLiteAdapterReader = new SQLiteAdapterReader(this);
 		mySQLiteAdapterReader.openToRead();
 
+		// retrieve data from database
 		cursor = mySQLiteAdapterReader.queueAll();
 		String[] from = new String[]{SQLiteAdapter.KEY_NAME, SQLiteAdapter.KEY_DATE, SQLiteAdapter.KEY_TIME};
 		int[] to = new int[]{R.id.text1, R.id.text2, R.id.text3};
@@ -113,6 +119,8 @@ public class History extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			
+			// Start tripdisplay class and pass item key in extras
 			Intent td = new Intent(History.this, TripDisplay.class);
 			Cursor cursor = (Cursor) parent.getItemAtPosition(position);
 			final int item_id = cursor.getInt(cursor.getColumnIndex(SQLiteAdapter.KEY_ID));

@@ -21,6 +21,7 @@
 
         <activity
             android:name="com.example.cyclapp_1_2.Home"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,44 +31,54 @@
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.History"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_history" >
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.Test"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_test" >
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.Test2"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_test" >
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.About"
             android:label="@string/title_activity_about"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.Navigation"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_navigation" >
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.TripDisplay"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_journey_display" >
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.Map"
             android:label="@string/map_name"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.LocationDevice"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_journey_display" >
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.Preferences"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_preferences" >
         </activity>
         <activity
             android:name="com.example.cyclapp_1_2.RouteMap"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_route_map" >
         </activity>
         <activity android:name="org.achartengine.GraphicalActivity" />
